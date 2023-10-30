@@ -1,5 +1,4 @@
     package com.example.laboration2;
-
     import androidx.appcompat.app.AppCompatActivity;
 
     import android.graphics.Color;
@@ -18,7 +17,6 @@
     import java.util.List;
     import java.util.Map;
     import java.util.StringTokenizer;
-
     public class MainActivity extends AppCompatActivity {
         String groupAdress ="";
         String childAdress = "";
@@ -28,8 +26,6 @@
         Map<String, List<String>> collection;
         ExpandableListView expandableListView;
         ExpandableListAdapter expandableListAdapter;
-
-
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -65,7 +61,6 @@
                             expandableListAdapter.getGroup(i) + " List Collapsed.", Toast.LENGTH_SHORT).show();
                 }
             });
-
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
@@ -89,14 +84,31 @@
                 }
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    String searchText = editable.toString();
-                    if (isSearchTextValid(searchText)) {
+                    String searchText = editable.toString().trim();
+                    if (isSearchTextValid(searchText) == 1) {
+                        int index = getGroupIndex(searchText);
+                        if(index!=-1){
+                            String grou = expandableListAdapter.getGroup(index).toString();
+                            //expandableListView.expandGroup(index);
+                        }
                         input.setBackgroundColor(Color.GREEN);
-                    } else {
+                    }else if(isSearchTextValid(searchText)==-1) {
                         input.setBackgroundColor(Color.RED);
+                    }else{
+                        input.setBackgroundColor(Color.WHITE);
                     }
                 }
             });
+        }
+
+        private int getGroupIndex(String text){
+            String tmp = text.replaceAll("/", "");
+            int groupPosition = -1;
+            if(groupList.contains(tmp)){
+
+                groupPosition = groupList.indexOf(tmp);
+            }
+            return groupPosition;
         }
         private void createCollection() {
             String[] data = {"green", "yellow", "red", "blue"};
@@ -118,37 +130,30 @@
             groupList.add("medium");
             groupList.add("dark");
         }
-
         public static List<String> splitter(String input) {
             List<String> resultList = new ArrayList<>();
-
-            // Split the input string by "/"
             String[] parts = input.split("/");
-
-            // Add the elements to the list, including the trailing "/"
             for (String part : parts) {
                 if (!part.isEmpty()) {
                     resultList.add("/");
                     resultList.add(part);
                 }
             }
-
-            // Add the trailing "/" if it exists in the original input
             if (input.endsWith("/")) {
                 resultList.add("/");
             }
-
             return resultList;
         }
-        private boolean isSearchTextValid(String searchText) {
+        private int isSearchTextValid(String searchText) {
             List<String> string = splitter(searchText.trim());
             if (string.size() == 3 && "/"==(string.get(0)) && groupList.contains(string.get(1)) && "/"==(string.get(2))) {
-                return true;
-            } if (string.size() == 5 && "/" == string.get(0) && groupList.contains(string.get(1)) && "/" == string.get(2)
-                  && childList.contains(string.get(3)) && string.get(4) == "/") {
-                return true;
+                return 1;
+            } if (string.size() == 5 && "/"==string.get(0) && groupList.contains(string.get(1)) && "/"==string.get(2)
+                  && childList.contains(string.get(3)) && string.get(4)=="/") {
+                return 1;
+            } if(string.size() == 0){
+                return 0;
             }
-            return false;
+            return -1;
         }
-
     }
