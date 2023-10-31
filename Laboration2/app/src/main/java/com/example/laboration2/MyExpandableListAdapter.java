@@ -14,40 +14,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MyExpandableListAdapter extends BaseExpandableListAdapter implements Filterable {
+public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private Map<String, List<String>> collection;
     private List<String> groupList;
-    private List<String> filteredGroupList;
-    private List<String> filteredChildList;
+
 
     public MyExpandableListAdapter(Context context, List<String> groupList,
                                    Map<String, List<String>> collection) {
         this.context = context;
         this.groupList = groupList;
         this.collection = collection;
-        this.filteredGroupList = new ArrayList<>(groupList);
-        this.filteredChildList = new ArrayList<>();
     }
 
     @Override
     public int getGroupCount() {
-        return filteredGroupList.size();
+        return groupList.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return collection.get(filteredGroupList.get(i)).size();
+        return collection.get(groupList.get(i)).size();
     }
 
     @Override
     public Object getGroup(int i) {
-        return filteredGroupList.get(i);
+        return groupList.get(i);
     }
 
     @Override
     public Object getChild(int i, int i1) {
-        return collection.get(filteredGroupList.get(i)).get(i1);
+        return collection.get(groupList.get(i)).get(i1);
     }
 
     @Override
@@ -95,36 +92,4 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
         return true;
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults filterResults = new FilterResults();
-                List<String> filteredGroups = new ArrayList<>();
-                List<String> filteredChildren = new ArrayList<>();
-
-                for (String group : groupList) {
-                    for (String child : collection.get(group)) {
-                        String combined = "/" + group + "/" + child + "/";
-                        if (combined.contains(charSequence)) {
-                            filteredGroups.add(group);
-                            filteredChildren.add(child);
-                        }
-                    }
-                }
-
-                filterResults.values = filteredGroups;
-                filterResults.count = filteredGroups.size();
-                filteredChildList = filteredChildren;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredGroupList = (List<String>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
 }

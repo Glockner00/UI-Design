@@ -33,32 +33,17 @@
             createGroupList();
             createCollection();
             input = findViewById(R.id.input);
+            input.setText("/");
             expandableListView = findViewById(R.id.labb2);
             expandableListAdapter = new MyExpandableListAdapter(this, groupList, collection);
             expandableListView.setAdapter(expandableListAdapter);
-            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                 @Override
-                public void onGroupExpand(int i) {
+                public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
                     String selected = expandableListAdapter.getGroup(i).toString();
                     groupAdress = selected;
                     input.setText("/" + groupAdress + "/");
-                    Toast.makeText(getApplicationContext(),
-                            expandableListAdapter.getGroup(i) + " List Expanded.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-                @Override
-                public void onGroupCollapse(int i) {
-                    String selected = expandableListAdapter.getGroup(i).toString();
-                    if(selected == groupAdress){
-                        input.setText("");
-                        return;
-                    }else{
-                        groupAdress = selected;
-                                input.setText("/" + groupAdress + "/");
-                    }
-                    Toast.makeText(getApplicationContext(),
-                            expandableListAdapter.getGroup(i) + " List Collapsed.", Toast.LENGTH_SHORT).show();
+                    return true;
                 }
             });
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -86,12 +71,13 @@
                 public void afterTextChanged(Editable editable) {
                     String searchText = editable.toString().trim();
                     if (isSearchTextValid(searchText) == 1) {
-                        int index = getGroupIndex(searchText);
-                        if(index!=-1){
-                            String grou = expandableListAdapter.getGroup(index).toString();
-                            //expandableListView.expandGroup(index);
-                        }
                         input.setBackgroundColor(Color.GREEN);
+                        for(int i=0; i<groupList.size(); i++){
+                            if(groupList.get(i).toString().equals(searchText.replaceAll("/", ""))){
+                                expandableListView.expandGroup(i);
+                            }
+                        }
+                        //expandableListView.expandGroup(index);
                     }else if(isSearchTextValid(searchText)==-1) {
                         input.setBackgroundColor(Color.RED);
                     }else{
@@ -99,16 +85,6 @@
                     }
                 }
             });
-        }
-
-        private int getGroupIndex(String text){
-            String tmp = text.replaceAll("/", "");
-            int groupPosition = -1;
-            if(groupList.contains(tmp)){
-
-                groupPosition = groupList.indexOf(tmp);
-            }
-            return groupPosition;
         }
         private void createCollection() {
             String[] data = {"green", "yellow", "red", "blue"};
@@ -149,7 +125,7 @@
             if (string.size() == 3 && "/"==(string.get(0)) && groupList.contains(string.get(1)) && "/"==(string.get(2))) {
                 return 1;
             } if (string.size() == 5 && "/"==string.get(0) && groupList.contains(string.get(1)) && "/"==string.get(2)
-                  && childList.contains(string.get(3)) && string.get(4)=="/") {
+                  && collection.get(string.get(1)).contains(string.get(3)) && string.get(4)=="/") {
                 return 1;
             } if(string.size() == 0){
                 return 0;
