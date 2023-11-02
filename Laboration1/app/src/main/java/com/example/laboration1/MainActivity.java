@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        if(oldChildPos!=childPos && groupPos!=-1 && childPos!=-1 & oldChildPos!=-1){
+                        if(groupPos!=-1 && oldChildPos!=-1 || inputData.length>2){
                             colorChildWhite(groupPos, oldChildPos);
 
                         } if(groupPos!=-1 && childPos!=-1 && checkChild && inputData.length==2){
