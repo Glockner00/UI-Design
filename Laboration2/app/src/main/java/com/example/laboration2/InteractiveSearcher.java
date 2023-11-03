@@ -10,6 +10,11 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A component that extends View. Main function is to connect EditText to RecyclerView.
+ * Works together with MainActivity (SearchAdapter reference) to and indirectly updates
+ * the RecyclerView.
+ */
 public class InteractiveSearcher extends View {
     private EditText input;
     private MainActivity mainActivity;
@@ -24,6 +29,7 @@ public class InteractiveSearcher extends View {
 
         input = mainActivity.findViewById(R.id.input);
     }
+
 
     public TextWatcher getTextWatcher() {
         return new TextWatcher() {
@@ -43,13 +49,22 @@ public class InteractiveSearcher extends View {
         };
     }
 
+    /**
+     * Fetches all search suggestions from an URL.
+     * @param searchText
+     */
     private void fetchSearchSuggestions(String searchText) {
-        // Här ska du inkludera din kod för att göra nätverksanrop och hämta sökförslag
-        // Använd HttpURLConnection eller valfritt nätverksbibliotek
-        // Uppdatera sökförslagen i din MainActivity och din adapter
-        // Använd mainActivity.getSearchAdapter() för att få adaptern
+        /*
+           TODO: 1. Inkludera kod för att göra nätverksanrop och hämta sökförslag.
+                 2. Använd HttpURLConnection som nätverksbibliotek.
+                 3. Uppdatera sökförslagen i MainActivity och adaptern.
+                 4. Använd mainActivity.getSearchAdapter() för att få adaptern.
+         */
     }
+    /*
+       TODO: 1. Inkludera tidigare kod för att hämta sökförslag med HttpURLConnection.
+             2. Anropa metoden som hämtar sökförslagen från webbtjänsten
+     */
 
-    // Här kan du inkludera din tidigare kod för att hämta sökförslag med HttpURLConnection
-    // Anropa metoden som hämtar sökförslagen från webbtjänsten
+
 }

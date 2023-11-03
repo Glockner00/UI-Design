@@ -1,16 +1,14 @@
 package com.example.laboration2;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private SearchAdapter searchAdapter;
+    private RecyclerView recyclerView; // Contains all search suggestions.
+    private SearchAdapter searchAdapter; // Handles the view of all search suggestions.
     private EditText input;
 
     @Override
@@ -29,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         input.addTextChangedListener(interactiveSearcher.getTextWatcher());
     }
 
+    /**
+     * A reference to the adapter.
+     * @return searchAdapter
+     */
     public SearchAdapter getSearchAdapter() {
         return searchAdapter;
     }
