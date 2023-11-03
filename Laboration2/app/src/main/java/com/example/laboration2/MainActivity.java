@@ -1,22 +1,17 @@
 package com.example.laboration2;
+
 import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.EditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    EditText input;
-    View interactiveSearcher;
-
     private RecyclerView recyclerView;
     private SearchAdapter searchAdapter;
-
+    private EditText input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +21,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<String> searchResults = new ArrayList<>(); // Sökförslag
-        searchAdapter = new SearchAdapter(searchResults);
+        searchAdapter = new SearchAdapter(new ArrayList<>());
         recyclerView.setAdapter(searchAdapter);
+
+        input = findViewById(R.id.input);
+        InteractiveSearcher interactiveSearcher = new InteractiveSearcher(this);
+        input.addTextChangedListener(interactiveSearcher.getTextWatcher());
+    }
+
+    public SearchAdapter getSearchAdapter() {
+        return searchAdapter;
     }
 }

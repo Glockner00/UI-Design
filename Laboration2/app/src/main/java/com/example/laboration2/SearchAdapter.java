@@ -1,10 +1,12 @@
 package com.example.laboration2;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
@@ -30,6 +32,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @Override
     public int getItemCount() {
         return searchResults.size();
+    }
+
+    public void updateData(List<String> newSearchResults) {
+        searchResults.clear();
+        searchResults.addAll(newSearchResults);
+        notifyDataSetChanged();
     }
 
     public class SearchViewHolder extends RecyclerView.ViewHolder {
