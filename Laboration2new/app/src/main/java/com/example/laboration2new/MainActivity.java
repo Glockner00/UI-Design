@@ -2,11 +2,11 @@ package com.example.laboration2new;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.widget.EditText;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -22,10 +22,8 @@ public class MainActivity extends AppCompatActivity {
         searchAdapter = new SearchAdapter(new ArrayList<>());
         recyclerView.setAdapter(searchAdapter);
         input = findViewById(R.id.input);
-
         InteractiveSearcher interactiveSearcher = new InteractiveSearcher(this);
         input.addTextChangedListener(interactiveSearcher.getTextWatcher());
-
     }
 
     public SearchAdapter getSearchAdapter(){ return searchAdapter; }
