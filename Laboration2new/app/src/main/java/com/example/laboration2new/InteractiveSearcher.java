@@ -1,6 +1,5 @@
 package com.example.laboration2new;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -9,6 +8,7 @@ import android.widget.EditText;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * A component that extends View. Main function is to connect EditText to RecyclerView.
@@ -53,8 +55,7 @@ public class InteractiveSearcher extends View    {
                 });
             }
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) { }
         };
     }
 
@@ -76,7 +77,17 @@ public class InteractiveSearcher extends View    {
     }
     private List<String> parseSearchSuggestions(InputStream responseStream){
         List<String> suggestions = new ArrayList<String>();
-        Log.d("Message", "OK response, starting to parse JSON");
+        try {
+            InputStreamReader reader = new InputStreamReader(responseStream);
+            Gson gson = new Gson();
+            Item item = gson.fromJson(reader, Item.class);
+            suggestions.addAll(item.getResult());
+
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.d("Message", "Exception parsing JSON" + e.getMessage());
+        }
+
         return suggestions;
     }
 }
