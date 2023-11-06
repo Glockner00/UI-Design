@@ -1,37 +1,27 @@
 package com.example.laboration3;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
     private int id = 0;
     private EditText input;
     private TextView output;
-
     private TextView id_counter;
     private HashMap<String, Item> searchHistory = new HashMap<>();
-    private ArrayList<String> newData = new ArrayList<>();
     private InteractiveSearcher interactiveSearcher;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         input.addTextChangedListener(getTextWatcher());
         id_counter = findViewById(R.id.id_view);
     }
-
     public TextWatcher getTextWatcher(){
         return new TextWatcher() {
             @Override
