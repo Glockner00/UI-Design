@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         interactiveSearcher = findViewById(R.id.interactiveSearcher);
-
+        interactiveSearcher = new InteractiveSearcher(this);
 
     }
 }

@@ -9,9 +9,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 public class MyListPopUpWindow extends View {
-    Context context;
-    String result;
-    Paint paint = new Paint();
+    private Context context;
+    private String result;
+    private Paint paint = new Paint();
 
     public MyListPopUpWindow(Context context, String result) {
         super(context);
@@ -29,6 +29,10 @@ public class MyListPopUpWindow extends View {
 
     public MyListPopUpWindow(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+    public void setResult(String result) {
+        this.result = result;
+        invalidate(); // Redraw the view with the updated result
     }
 
 

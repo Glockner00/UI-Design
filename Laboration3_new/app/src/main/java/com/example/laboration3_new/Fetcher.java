@@ -32,7 +32,7 @@ public class Fetcher {
     public ArrayList<String> getSearchSuggestions(String searchText){
         return fetch(searchText);
     }
-    private ArrayList<String> fetch(String searchText){
+    ArrayList<String> fetch(String searchText){
         ArrayList<String> data = new ArrayList<>();
         try {
             URL url = new URL("https://andla.pythonanywhere.com/getnames/" + id + "/" + searchText);
