@@ -8,28 +8,29 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-public class ListPopUpWindow extends View {
+public class MyListPopUpWindow extends View {
     Context context;
     String result;
     Paint paint = new Paint();
 
-    public ListPopUpWindow(Context context, String result) {
+    public MyListPopUpWindow(Context context, String result) {
         super(context);
+        this.context = context;
         this.result = result;
-
     }
 
-    public ListPopUpWindow(Context context, @Nullable AttributeSet attrs) {
+    public MyListPopUpWindow(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ListPopUpWindow(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MyListPopUpWindow(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public ListPopUpWindow(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MyListPopUpWindow(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
+
 
     @Override
     protected void onMeasure(int width, int height){

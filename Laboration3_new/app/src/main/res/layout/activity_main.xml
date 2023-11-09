@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="horizontal">
 
-    <EditText
-        android:layout_width="match_parent"
+    <com.example.laboration3_new.InteractiveSearcher
+        android:id="@+id/interactiveSearcher"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/input">
-    </EditText>
+        android:layout_weight="1"
+        android:text="com.example.laboration3_new.InteractiveSearcher" />
+
+
 
 </LinearLayout>
