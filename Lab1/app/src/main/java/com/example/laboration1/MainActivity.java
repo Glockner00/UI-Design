@@ -48,13 +48,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int i, long id) {
                 String selected = expandableListAdapter.getGroup(i).toString();
-                if(groupName.equals(selected)){
-                    input.setText("/");
-                    expandableListView.collapseGroup(i);
-                    return false;
+                input.setText("/" + selected + "/");
+                if(oldGroupPos!=i && oldChildPos!=-1){
+                    colorChildWhite(oldGroupPos, oldChildPos);
+                    expandableListView.collapseGroup(oldGroupPos);
                 }
-                groupName = selected;
-                input.setText("/" + groupName + "/");
+                oldGroupPos = i;
                 return true;
             }
         });
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 groupName = expandableListAdapter.getGroup(i).toString();
                 childName = expandableListAdapter.getChild(i, i1).toString();
                 input.setText("/" + groupName + "/" + childName + "/");
+                decolorIfNewChildInSameGroup();
                 colorChildGray(i, i1);
                 return true;
             }
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         if(delimiter.equals("/")){
                             if(tokenizer.hasMoreTokens()){
                                 String groupToken = tokenizer.nextToken();
+                                setInputBackground(groupList, groupToken);
                                 for(int i=0; i<groupList.size(); i++){
                                     if(groupToken.equals(groupList.get(i))){
                                         groupPos = i;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             } if(tokenizer.hasMoreTokens()){
                                 String childToken = tokenizer.nextToken();
+                                setInputBackground(childList, childToken);
                                 for(int i=0; i<childList.size(); i++){
                                     if(childToken.equals(childList.get(i))){
                                         childPos = i;
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }else{
+                    input.setBackgroundColor(Color.WHITE);
                     input.setText("/");
                 }
 
@@ -128,8 +131,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void setInputBackground(List<String> list, String token){
+        for(int j=0; j<list.size(); j++){
+            if(list.get(j).startsWith(token)){
+                input.setBackgroundColor(Color.WHITE);
+                break;
+            }else{
+                input.setBackgroundColor(Color.RED);
+            }
+        }
+    }
     public void decolorIfNewChildInSameGroup(){
-        if(oldGroupPos!=-1 && oldChildPos!=-1 && childPos!=-1 && oldChildPos!=childPos){
+        if(oldGroupPos!=-1 && oldChildPos!=-1 && childPos!=-1 && oldChildPos!=childPos && groupPos==oldGroupPos){
             colorChildWhite(oldGroupPos, oldChildPos);
         }
     }
@@ -144,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.getChildAt(oldChildIndex).setBackgroundColor(Color.WHITE);
     }
     public void colorChildGray(int x, int y){
-            int oldChildIndex = expandableListView.getFlatListPosition(ExpandableListView.
-                    getPackedPositionForChild(x, y));
-            expandableListView.getChildAt(oldChildIndex).setBackgroundColor(Color.GRAY);
-            oldChildPos = y;
-            oldGroupPos = x;
-        }
+        int oldChildIndex = expandableListView.getFlatListPosition(ExpandableListView.
+                getPackedPositionForChild(x, y));
+        expandableListView.getChildAt(oldChildIndex).setBackgroundColor(Color.GRAY);
+        oldChildPos = y;
+        oldGroupPos = x;
+    }
     private void createCollection() {
         String[] data = {"green", "yellow", "red", "blue"};
         collection = new HashMap<String, List<String>>();
