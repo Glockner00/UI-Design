@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class Fetcher {
     private int id;
     private String searchText;
-
     private ArrayList<String> data;
     public Fetcher(int id, String searchText){
         this.id = id;

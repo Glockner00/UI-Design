@@ -18,6 +18,7 @@ public class Row extends View {
         super(context);
         this.suggestion = suggestion;
         paint = new Paint();
+        paint.setTextSize(40);
     }
     public Row(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -44,6 +45,9 @@ public class Row extends View {
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, 50);
+
+        int width = View.MeasureSpec.getSize(widthMeasureSpec);
+        setMeasuredDimension(width, 100);
+
     }
 }

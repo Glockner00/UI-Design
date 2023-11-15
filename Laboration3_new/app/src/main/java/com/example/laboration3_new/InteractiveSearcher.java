@@ -4,6 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ListPopupWindow;
 
 import androidx.annotation.NonNull;
@@ -19,30 +20,33 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
     private MyAdapter myAdapter;
     private Fetcher fetcher;
     private ListPopupWindow listPopupWindow;
-
+    private Context context;
     public InteractiveSearcher(@NonNull Context context) {
         super(context);
+        this.context = context;
         init();
     }
-
     public InteractiveSearcher(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         init();
     }
     public InteractiveSearcher(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         init();
     }
     private void init() {
-        listPopupWindow = new ListPopupWindow(this.getContext());
-        myAdapter = new MyAdapter(getContext(), mySuggestions); // mySuggestions == null
+        mySuggestions = new ArrayList<>();
+        listPopupWindow = new ListPopupWindow(this.context);
+        listPopupWindow.setAnchorView(this);
+        listPopupWindow.setWidth(500);
+        listPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        myAdapter = new MyAdapter(this.context, mySuggestions);
         listPopupWindow.setAdapter(myAdapter);
-
-        // varje gång vi uppdaterar adaptern setData... Notify.. (i adaptern) och rensa.
         addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String selected = s.toString().trim();
@@ -57,16 +61,17 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
                             public void run() {
                                 if(fetchedId == id){
                                     myAdapter.setData(mySuggestions);
+                                    myAdapter.notifyDataSetChanged();
+                                    listPopupWindow.show();
                                 }
                                 id++;
-                                //discarda
+                                //discard
                             }
                         });
                     }
                 });
                 t.start();
             }
-
             @Override
             public void afterTextChanged(Editable s) { }
         });
