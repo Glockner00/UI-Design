@@ -8,16 +8,20 @@ import androidx.annotation.Nullable;
 public class Row extends View {
     private String suggestion;
     private Paint paint;
+    private int textWidth;
     public Row(Context context, String suggestion) {
         super(context);
-        this.suggestion = suggestion;
         paint = new Paint();
         paint.setTextSize(40);
+        this.suggestion = suggestion;
+        this.textWidth = (int) paint.measureText(suggestion);
+    }
+    public float getTextWidth(){
+        return this.textWidth;
     }
     public Row(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-
     public Row(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }

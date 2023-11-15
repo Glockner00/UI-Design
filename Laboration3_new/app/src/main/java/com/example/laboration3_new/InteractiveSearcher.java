@@ -11,20 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
 public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEditText {
+    private static final int DEFAULT_NUMBER_OF_SUGGESTIONS=10;
     private int id=-1;
-    private int numberOfSuggestions=10;
+    private int numberOfSuggestions=-1;
     private ArrayList<String> mySuggestions;
     private MyAdapter myAdapter;
-    private Fetcher fetcher;
+    private Fetch fetch;
     private ListPopupWindow listPopupWindow;
     private Context context;
     public InteractiveSearcher(@NonNull Context context) {
         super(context);
         this.context = context;
         init();
-    }
-    public void setNumberOfSuggestions(int n){
-        this.numberOfSuggestions = n;
     }
     public InteractiveSearcher(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,49 +35,64 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
         init();
     }
     private void init() {
+        if(numberOfSuggestions==-1){numberOfSuggestions=DEFAULT_NUMBER_OF_SUGGESTIONS;}
         mySuggestions = new ArrayList<>();
         listPopupWindow = new ListPopupWindow(this.context);
         listPopupWindow.setAnchorView(this);
-        listPopupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
         listPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
         myAdapter = new MyAdapter(this.context, mySuggestions);
         listPopupWindow.setAdapter(myAdapter);
-        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listPopupWindow.setOnItemClickListener(getClickListener());
+        addTextChangedListener(getTextWatcher());
+    }
+    public void setNumberOfSuggestions(int n){
+        this.numberOfSuggestions = n;
+    }
+    private AdapterView.OnItemClickListener getClickListener(){
+        return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Row row = (Row) view;
                 setText(row.getSuggestion());
             }
-        });
-        addTextChangedListener(new TextWatcher() {
+        };
+    }
+    public TextWatcher getTextWatcher(){
+        return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final String selected = s.toString().trim();
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        id++;
-                        fetcher = new Fetcher(id, selected, numberOfSuggestions);
-                        mySuggestions = fetcher.getSearchSuggestions();
-                        post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(id == fetcher.getId()){
-                                    myAdapter.setData(mySuggestions);
-                                    myAdapter.notifyDataSetChanged();
-                                    listPopupWindow.show();
+                String input = s.toString().trim();
+                if(!input.isEmpty()) {
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            id++;
+                            fetch = new Fetch(id, input, numberOfSuggestions);
+                            mySuggestions = fetch.getSearchSuggestions();
+                            post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (id == fetch.getId()) {
+                                        myAdapter.setData(mySuggestions);
+                                        myAdapter.notifyDataSetChanged();
+                                        listPopupWindow.setWidth(myAdapter.getWidestTextWidth());
+                                        listPopupWindow.show();
+                                    }
                                 }
-                            }
-                        });
-                    }
-                });
-                t.start();
+                            });
+                        }
+                    });
+                    t.start();
+                }else{
+                    myAdapter.clearData();
+                    myAdapter.notifyDataSetChanged();
+                    listPopupWindow.dismiss();
+                }
             }
             @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+            public void afterTextChanged(Editable s) { }
+        };
     }
 }

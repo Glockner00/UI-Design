@@ -8,12 +8,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-public class Fetcher {
+public class Fetch {
     private int id;
     private String searchText;
     private int numberOfSuggestions;
     private ArrayList<String> data;
-    public Fetcher(int id, String searchText, int numberOfSuggestions){
+    public Fetch(int id, String searchText, int numberOfSuggestions){
         this.id = id;
         this.searchText = searchText;
         this.numberOfSuggestions = numberOfSuggestions;
@@ -35,7 +35,7 @@ public class Fetcher {
                 InputStreamReader reader = new InputStreamReader(responseStream);
                 Gson gson = new Gson();
                 Item item = gson.fromJson(reader, Item.class);
-                int limit = Math.min(item.getResult().size(), 10);
+                int limit = Math.min(item.getResult().size(), numberOfSuggestions);
                 data.addAll(item.getResult().subList(0, limit));
                 connection.disconnect();
             }else{

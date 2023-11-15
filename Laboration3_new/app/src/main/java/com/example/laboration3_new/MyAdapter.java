@@ -11,7 +11,6 @@ public class MyAdapter extends BaseAdapter {
         this.context = context;
         this.data = data;
     }
-
     @Override
     public int getCount() {
         return data.size();
@@ -34,5 +33,18 @@ public class MyAdapter extends BaseAdapter {
     }
     public void clearData(){
         this.data.clear();
+    }
+    public int getWidestTextWidth(){
+        ArrayList<Row> rows = new ArrayList<>();
+        for(String suggestion : data){
+            Row row = new Row(context, suggestion);
+            rows.add(row);
+        }
+        int maxWidth = 0;
+        for (Row row : rows) {
+            float textWidth = row.getTextWidth();
+            maxWidth = (int) Math.max(maxWidth, textWidth);
+        }
+        return maxWidth;
     }
 }
