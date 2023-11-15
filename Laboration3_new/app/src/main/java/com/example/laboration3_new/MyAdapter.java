@@ -1,12 +1,8 @@
 package com.example.laboration3_new;
 import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
-
 import java.util.ArrayList;
 public class MyAdapter extends BaseAdapter {
     private Context context;
@@ -15,6 +11,7 @@ public class MyAdapter extends BaseAdapter {
         this.context = context;
         this.data = data;
     }
+
     @Override
     public int getCount() {
         return data.size();
@@ -31,10 +28,6 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = new Row(context, data.get(position));
         return v;
-    }
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
     }
     public void setData(ArrayList<String> data) {
         this.data = data;

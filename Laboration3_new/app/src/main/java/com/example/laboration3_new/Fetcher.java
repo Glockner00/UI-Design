@@ -7,28 +7,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Array;
 import java.util.ArrayList;
 public class Fetcher {
     private int id;
     private String searchText;
+    private int numberOfSuggestions;
     private ArrayList<String> data;
-    public Fetcher(int id, String searchText){
+    public Fetcher(int id, String searchText, int numberOfSuggestions){
         this.id = id;
         this.searchText = searchText;
+        this.numberOfSuggestions = numberOfSuggestions;
         this.data = fetch(searchText);
     }
     public int getId() {
         return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getSearchText() {
-        return searchText;
-    }
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
     }
     public ArrayList<String> getSearchSuggestions(){
         return this.data;
@@ -43,7 +35,8 @@ public class Fetcher {
                 InputStreamReader reader = new InputStreamReader(responseStream);
                 Gson gson = new Gson();
                 Item item = gson.fromJson(reader, Item.class);
-                data.addAll(item.getResult());
+                int limit = Math.min(item.getResult().size(), 10);
+                data.addAll(item.getResult().subList(0, limit));
                 connection.disconnect();
             }else{
                 Log.d("Bad Connection", String.valueOf(connection.getResponseCode()));
