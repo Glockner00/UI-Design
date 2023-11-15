@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+
 public class MainActivity extends AppCompatActivity {
     int groupPos=-1;
     int oldGroupPos=-1;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     int oldChildPos=-1;
     String groupName="";
     String childName="";
-    boolean checkChild = false;
+    boolean hadChild = false;
     EditText input;
     List<String> groupList;
     List<String> childList;
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 groupName = expandableListAdapter.getGroup(i).toString();
                 childName = expandableListAdapter.getChild(i, i1).toString();
                 input.setText("/" + groupName + "/" + childName + "/");
-                colorChildWhite(i, i1);
+                colorChildGray(i, i1);
                 return true;
             }
         });
@@ -74,60 +76,67 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String text = editable.toString().trim();
-                String[] tmpData = text.split("/");
-                String[] inputData = Arrays.stream(tmpData).filter(s -> !s.isEmpty()).toArray(String[]::new);
                 if(!text.isEmpty()){
-                    if(text.endsWith("/")){
-                        String selected = text.replaceAll("/", "");
-                        for(int i=0; i<groupList.size(); i++){
-                            if(groupList.get(i).equals(selected)){
-                                expandableListView.expandGroup(i);
-                                input.setBackgroundColor(Color.WHITE);
-                                break;
-                            }
-                        }
-                    } if(!text.endsWith("/") && inputData.length==1) {
-                        for (int i = 0; i < groupList.size(); i++) {
-                            expandableListView.collapseGroup(i);
-                            input.setBackgroundColor(Color.WHITE);
-                        }
-                    }
-                    if(inputData.length>1){
-                        String groupName = inputData[0];
-                        if(groupList.contains(groupName)){
-                            groupPos = groupList.indexOf(groupName);
-                            List<String> childrenOfGroup = collection.get(groupName);
-                            for(int i=0; i<childrenOfGroup.size(); i++){
-                                if(childrenOfGroup.get(i).startsWith(inputData[1])){
-                                    input.setBackgroundColor(Color.WHITE);
-                                    childPos = i;
-                                    checkChild = true;
-                                    break;
-                                }else{
-                                    input.setBackgroundColor(Color.RED);
-                                    checkChild = false;
-                                    if(groupPos!=-1 && childPos!=-1) {
-                                        colorChildWhite(groupPos, childPos);
+                    StringTokenizer tokenizer = new StringTokenizer(text, "/", true);
+                    while(tokenizer.hasMoreTokens()){
+                        String delimiter = tokenizer.nextToken();
+                        if(delimiter.equals("/")){
+                            if(tokenizer.hasMoreTokens()){
+                                String groupToken = tokenizer.nextToken();
+                                for(int i=0; i<groupList.size(); i++){
+                                    if(groupToken.equals(groupList.get(i))){
+                                        groupPos = i;
+                                        if(tokenizer.hasMoreTokens()){
+                                            delimiter = tokenizer.nextToken();
+                                            if(delimiter.equals("/")){
+                                                expandableListView.expandGroup(groupPos);
+                                            }
+                                        }else{
+                                            if(oldChildPos!=-1 && oldGroupPos!=-1){
+                                                colorChildWhite(oldGroupPos, oldChildPos);
+                                            }
+                                            collapseGroups();
+                                            return;
+                                        }
+                                    }
+                                }
+                            } if(tokenizer.hasMoreTokens()){
+                                String childToken = tokenizer.nextToken();
+                                for(int i=0; i<childList.size(); i++){
+                                    if(childToken.equals(childList.get(i))){
+                                        childPos = i;
+                                        if(tokenizer.hasMoreTokens()){
+                                            delimiter = tokenizer.nextToken();
+                                            if(delimiter.equals("/")){
+                                                decolorIfNewChildInSameGroup();
+                                                colorChildGray(groupPos, childPos);
+                                            }
+                                        }else{
+                                            hadChild = false;
+                                            return;
+                                        }
                                     }
                                 }
                             }
                         }
-                        if(groupPos!=-1 && oldChildPos!=-1 || inputData.length>2){
-                            colorChildWhite(groupPos, oldChildPos);
-
-                        } if(groupPos!=-1 && childPos!=-1 && checkChild && inputData.length==2){
-                            colorChildGray(groupPos, childPos);
-                            oldGroupPos = groupPos;
-                            oldChildPos = childPos;
-                        }
-                    } if(inputData.length==1 && oldGroupPos!=-1 && oldChildPos!=-1){
-                        colorChildWhite(oldGroupPos, oldChildPos);
                     }
                 }else{
                     input.setText("/");
                 }
+
             }
         });
+    }
+
+    public void decolorIfNewChildInSameGroup(){
+        if(oldGroupPos!=-1 && oldChildPos!=-1 && childPos!=-1 && oldChildPos!=childPos){
+            colorChildWhite(oldGroupPos, oldChildPos);
+        }
+    }
+    public void collapseGroups(){
+        for(int i=0; i<groupList.size(); i++){
+            expandableListView.collapseGroup(i);
+        }
     }
     public void colorChildWhite(int x, int y){
         int oldChildIndex = expandableListView.getFlatListPosition(ExpandableListView.
@@ -135,10 +144,12 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.getChildAt(oldChildIndex).setBackgroundColor(Color.WHITE);
     }
     public void colorChildGray(int x, int y){
-        int oldChildIndex = expandableListView.getFlatListPosition(ExpandableListView.
-                getPackedPositionForChild(x, y));
-        expandableListView.getChildAt(oldChildIndex).setBackgroundColor(Color.GRAY);
-    }
+            int oldChildIndex = expandableListView.getFlatListPosition(ExpandableListView.
+                    getPackedPositionForChild(x, y));
+            expandableListView.getChildAt(oldChildIndex).setBackgroundColor(Color.GRAY);
+            oldChildPos = y;
+            oldGroupPos = x;
+        }
     private void createCollection() {
         String[] data = {"green", "yellow", "red", "blue"};
         collection = new HashMap<String, List<String>>();
