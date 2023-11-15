@@ -25,7 +25,7 @@ public class Fetch {
     public ArrayList<String> getSearchSuggestions(){
         return this.data;
     }
-    ArrayList<String> fetch(String searchText){
+    private ArrayList<String> fetch(String searchText){
         ArrayList<String> data = new ArrayList<>();
         try {
             URL url = new URL("https://andla.pythonanywhere.com/getnames/" + id + "/" + searchText);

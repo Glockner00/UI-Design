@@ -63,36 +63,39 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String input = s.toString().trim();
-                if(!input.isEmpty()) {
-                    Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            id++;
-                            fetch = new Fetch(id, input, numberOfSuggestions);
-                            mySuggestions = fetch.getSearchSuggestions();
-                            post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (id == fetch.getId()) {
-                                        myAdapter.setData(mySuggestions);
-                                        myAdapter.notifyDataSetChanged();
-                                        listPopupWindow.setWidth(myAdapter.getWidestTextWidth());
-                                        listPopupWindow.show();
-                                    }
+                final String input = s.toString().trim();
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        id++;
+                        fetch = new Fetch(id, input, numberOfSuggestions);
+                        mySuggestions = fetch.getSearchSuggestions();
+                        post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mySuggestions.isEmpty()){
+                                    clearWindow();
+                                    return;
                                 }
-                            });
-                        }
-                    });
-                    t.start();
-                }else{
-                    myAdapter.clearData();
-                    myAdapter.notifyDataSetChanged();
-                    listPopupWindow.dismiss();
-                }
+                                if (id == fetch.getId()) {
+                                    myAdapter.setData(mySuggestions);
+                                    myAdapter.notifyDataSetChanged();
+                                    listPopupWindow.setWidth(myAdapter.getWidestTextWidth());
+                                    listPopupWindow.show();
+                                }
+                            }
+                        });
+                    }
+                });
+                t.start();
             }
             @Override
             public void afterTextChanged(Editable s) { }
         };
+    }
+    public void clearWindow(){
+        myAdapter.clearData();
+        myAdapter.notifyDataSetChanged();
+        listPopupWindow.dismiss();
     }
 }
