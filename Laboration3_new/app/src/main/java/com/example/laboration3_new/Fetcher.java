@@ -12,10 +12,12 @@ import java.util.ArrayList;
 public class Fetcher {
     private int id;
     private String searchText;
+
+    private ArrayList<String> data;
     public Fetcher(int id, String searchText){
         this.id = id;
         this.searchText = searchText;
-
+        this.data = fetch(searchText);
     }
     public int getId() {
         return id;
@@ -29,8 +31,8 @@ public class Fetcher {
     public void setSearchText(String searchText) {
         this.searchText = searchText;
     }
-    public ArrayList<String> getSearchSuggestions(String searchText){
-        return fetch(searchText);
+    public ArrayList<String> getSearchSuggestions(){
+        return this.data;
     }
     ArrayList<String> fetch(String searchText){
         ArrayList<String> data = new ArrayList<>();

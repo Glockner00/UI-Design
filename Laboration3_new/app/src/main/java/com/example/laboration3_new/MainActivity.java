@@ -13,6 +13,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         interactiveSearcher = findViewById(R.id.interactiveSearcher);
         interactiveSearcher = new InteractiveSearcher(this);
-
     }
 }

@@ -1,20 +1,17 @@
 package com.example.laboration3_new;
-
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
-
-/**
- * Adapter for listpopupview
- */
 
 public class MyAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<String> data;
-
     public MyAdapter(Context context, ArrayList<String> data) {
         this.context = context;
         this.data = data;
@@ -37,16 +34,21 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MyListPopUpWindow listItemView;
-        if (convertView == null) {
-            // If convertView is null, create a new MyListPopUpWindow
-            listItemView = new MyListPopUpWindow(context, data.get(position));
-        } else {
-            // If convertView is not null, reuse the existing view
-            listItemView = (MyListPopUpWindow) convertView;
-            listItemView.setResult(data.get(position)); // Update the result for the view
-        }
-        return listItemView;
+        return convertView;
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    public void setData(ArrayList<String> data) {
+        this.data = data;
+        Log.d("message", "MyAdapter");
+    }
+
+    public void clearData(){
+        this.data.clear();
+    }
 }
+
