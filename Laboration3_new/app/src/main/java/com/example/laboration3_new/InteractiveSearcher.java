@@ -34,19 +34,19 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
         this.context = context;
         init();
     }
+    public void setNumberOfSuggestions(int n){
+        this.numberOfSuggestions = n;
+    }
     private void init() {
         if(numberOfSuggestions==-1){numberOfSuggestions=DEFAULT_NUMBER_OF_SUGGESTIONS;}
         mySuggestions = new ArrayList<>();
+        myAdapter = new MyAdapter(this.context, mySuggestions);
         listPopupWindow = new ListPopupWindow(this.context);
+        listPopupWindow.setAdapter(myAdapter);
         listPopupWindow.setAnchorView(this);
         listPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-        myAdapter = new MyAdapter(this.context, mySuggestions);
-        listPopupWindow.setAdapter(myAdapter);
         listPopupWindow.setOnItemClickListener(getClickListener());
         addTextChangedListener(getTextWatcher());
-    }
-    public void setNumberOfSuggestions(int n){
-        this.numberOfSuggestions = n;
     }
     private AdapterView.OnItemClickListener getClickListener(){
         return new AdapterView.OnItemClickListener() {
@@ -57,7 +57,7 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
             }
         };
     }
-    public TextWatcher getTextWatcher(){
+    private TextWatcher getTextWatcher(){
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -93,7 +93,7 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
             public void afterTextChanged(Editable s) { }
         };
     }
-    public void clearWindow(){
+    private void clearWindow(){
         myAdapter.clearData();
         myAdapter.notifyDataSetChanged();
         listPopupWindow.dismiss();
