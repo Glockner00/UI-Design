@@ -45,17 +45,14 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
         listPopupWindow.setAdapter(myAdapter);
         listPopupWindow.setAnchorView(this);
         listPopupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-        listPopupWindow.setOnItemClickListener(getClickListener());
         addTextChangedListener(getTextWatcher());
-    }
-    private AdapterView.OnItemClickListener getClickListener(){
-        return new AdapterView.OnItemClickListener() {
+        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Row row = (Row) view;
                 setText(row.getSuggestion());
             }
-        };
+        });
     }
     private TextWatcher getTextWatcher(){
         return new TextWatcher() {
