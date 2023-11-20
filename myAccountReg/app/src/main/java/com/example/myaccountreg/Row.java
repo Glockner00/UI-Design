@@ -6,7 +6,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
-public class Row extends LinearLayout {
+import androidx.cardview.widget.CardView;
+public class Row extends CardView {
     private Row_Type rowType;
     private EditText editText;
 
@@ -22,26 +23,49 @@ public class Row extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public Row(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     private void makeRow(){
+        setCardElevation(8); // Justera efter behov
+        setRadius(8); // Justera efter behov
+        setUseCompatPadding(true);
+
         editText = new EditText(getContext());
         LayoutParams params = new LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.MATCH_PARENT
         );
         editText.setLayoutParams(params);
-
         switch (rowType){
             case PASSWORD:
-                editText.setHint("Password");
+                editText.setHint("password");
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 break;
             case EMAIL:
-                editText.setHint("E-mail");
+                editText.setHint("email");
                 editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                break;
+            case FIRSTNAME:
+                editText.setHint("firstname");
+                editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                break;
+            case LASTNAME:
+                editText.setHint("lastname");
+                editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                break;
+            case USERNAME:
+                editText.setHint("username");
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            case AGE:
+                editText.setHint("age");
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+            case PHONENUMBER:
+                editText.setHint("phone number");
+                editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                break;
+            case CUSTOM:
+                editText.setHint("");
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
             default:
                 Log.d("Default", "Wrong type");
@@ -58,7 +82,6 @@ public class Row extends LinearLayout {
         this.rowType = type;
         makeRow();
     }
-
     public String getText() {
         return editText.getText().toString();
     }

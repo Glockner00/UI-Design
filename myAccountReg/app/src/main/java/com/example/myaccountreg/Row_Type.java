@@ -6,5 +6,7 @@ public enum Row_Type {
     PASSWORD,
     EMAIL,
     AGE,
+    CUSTOM,
+    PHONENUMBER,
 
 }
