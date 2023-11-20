@@ -1,5 +1,4 @@
 package com.example.myaccountreg;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 public class AccountRegistration extends LinearLayout {
     private ArrayList<Row_Type> selectedFields;
     private TextView textView;
-
     private Button registerButton;
     private Row row;
 
@@ -68,7 +66,7 @@ public class AccountRegistration extends LinearLayout {
         }
     }
 
-    public void updateFields() {
+    private void updateFields() {
         removeAllViews();
         updateTextViewContent();
         for (Row_Type fieldType : selectedFields) {
@@ -107,7 +105,7 @@ public class AccountRegistration extends LinearLayout {
                 return Row_Type.USERNAME;
             case "age":
                 return Row_Type.AGE;
-            case "phonenumber":
+            case "phone-number":
                 return Row_Type.PHONENUMBER;
             case "custom":
                 return Row_Type.CUSTOM;

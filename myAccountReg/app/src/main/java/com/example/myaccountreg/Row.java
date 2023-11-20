@@ -4,28 +4,24 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 public class Row extends CardView {
     private Row_Type rowType;
     private EditText editText;
-
+    private EditText rePassword;
     public Row(Context context) {
         super(context);
     }
-
     public Row(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-
     public Row(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
     private void makeRow(){
-        setCardElevation(8); // Justera efter behov
-        setRadius(8); // Justera efter behov
+        setCardElevation(8);
+        setRadius(8);
         setUseCompatPadding(true);
 
         editText = new EditText(getContext());
@@ -60,7 +56,7 @@ public class Row extends CardView {
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 break;
             case PHONENUMBER:
-                editText.setHint("phone number");
+                editText.setHint("phone-number");
                 editText.setInputType(InputType.TYPE_CLASS_PHONE);
                 break;
             case CUSTOM:

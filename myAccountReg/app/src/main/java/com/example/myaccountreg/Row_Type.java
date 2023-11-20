@@ -8,5 +8,4 @@ public enum Row_Type {
     AGE,
     CUSTOM,
     PHONENUMBER,
-
 }

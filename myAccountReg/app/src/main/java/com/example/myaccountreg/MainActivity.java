@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         accountRegistration.addField("firstname");
         accountRegistration.addField("lastname");
         accountRegistration.addField("email");
-        accountRegistration.addField("phonenumber");
+        accountRegistration.addField("phone-number");
         accountRegistration.addField("password");
     }
 }
