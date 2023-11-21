@@ -11,31 +11,26 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 public class AccountRegistration extends LinearLayout {
-    private ArrayList<Row_Type> selectedFields;
+    private ArrayList<RowType> selectedFields;
     private TextView textView;
     private Button registerButton;
     private Row row;
-
     public AccountRegistration(Context context) {
         super(context);
         init();
     }
-
     public AccountRegistration(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
-
     public AccountRegistration(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
-
     public AccountRegistration(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
-
     private void init() {
         setOrientation(VERTICAL);
         textView = new TextView(getContext());
@@ -44,20 +39,16 @@ public class AccountRegistration extends LinearLayout {
     }
 
     private void onRegisterButtonClick() {
+
     }
 
-    public void addField(String fieldName) {
-        Row_Type rowType = getRowTypeFromFieldName(fieldName);
-        if (rowType != null) {
+    public void addField(RowType rowType){
+        if(rowType!=null){
             selectedFields.add(rowType);
             updateFields();
-        } else {
-            Log.d("AccountRegistration", "Invalid field type: " + fieldName);
         }
     }
-
-    public void removeField(String fieldType) {
-        Row_Type rowType = getRowTypeFromFieldName(fieldType);
+    public void removeField(RowType rowType) {
         if (rowType != null) {
             selectedFields.remove(rowType);
             updateFields();
@@ -69,13 +60,12 @@ public class AccountRegistration extends LinearLayout {
     private void updateFields() {
         removeAllViews();
         updateTextViewContent();
-        for (Row_Type fieldType : selectedFields) {
+        for (RowType fieldType : selectedFields) {
             row = new Row(getContext());
             row.setRowType(fieldType);
             addView(row);
         }
         updateButtonViewContent();
-
     }
     private void updateButtonViewContent(){
         registerButton.setText("Register");
@@ -89,30 +79,5 @@ public class AccountRegistration extends LinearLayout {
         textView.setGravity(Gravity.CENTER);
         textView.setText(textContent);
         addView(textView);
-    }
-
-    private Row_Type getRowTypeFromFieldName(String fieldType) {
-        switch (fieldType.toLowerCase()) {
-            case "password":
-                return Row_Type.PASSWORD;
-            case "email":
-                return Row_Type.EMAIL;
-            case "firstname":
-                return Row_Type.FIRSTNAME;
-            case "lastname":
-                return Row_Type.LASTNAME;
-            case "username":
-                return Row_Type.USERNAME;
-            case "age":
-                return Row_Type.AGE;
-            case "phone-number":
-                return Row_Type.PHONENUMBER;
-            case "custom":
-                return Row_Type.CUSTOM;
-            default:
-                Log.wtf("Wrong field type", "FieldType doesn't exist");
-                break;
-        }
-        return null;
     }
 }

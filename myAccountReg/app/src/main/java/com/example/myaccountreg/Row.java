@@ -7,7 +7,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 public class Row extends CardView {
-    private Row_Type rowType;
+    private RowType rowType;
     private EditText editText;
     private EditText rePassword;
     public Row(Context context) {
@@ -74,7 +74,7 @@ public class Row extends CardView {
      * update the row type
      * @param type
      */
-    public void setRowType(Row_Type type) {
+    public void setRowType(RowType type) {
         this.rowType = type;
         makeRow();
     }

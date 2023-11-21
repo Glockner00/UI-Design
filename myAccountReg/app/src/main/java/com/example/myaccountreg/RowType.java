@@ -1,5 +1,5 @@
 package com.example.myaccountreg;
-public enum Row_Type {
+public enum RowType {
     FIRSTNAME,
     LASTNAME,
     USERNAME,

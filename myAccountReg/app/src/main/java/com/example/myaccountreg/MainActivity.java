@@ -10,11 +10,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         accountRegistration = findViewById(R.id.accountReg);
-        accountRegistration.addField("username");
-        accountRegistration.addField("firstname");
-        accountRegistration.addField("lastname");
-        accountRegistration.addField("email");
-        accountRegistration.addField("phone-number");
-        accountRegistration.addField("password");
+        accountRegistration.addField(RowType.FIRSTNAME);
+        accountRegistration.addField(RowType.LASTNAME);
+        accountRegistration.addField(RowType.AGE);
+        accountRegistration.addField(RowType.EMAIL);
+        accountRegistration.addField(RowType.PHONENUMBER);
     }
 }
