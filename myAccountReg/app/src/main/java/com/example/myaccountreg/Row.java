@@ -20,10 +20,11 @@ public class Row extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    protected void customizeBaseAppearance(int textSize, int textColor, String hint) {
+    protected void customizeBaseAppearance(int textSize, int textColor, String hint, int inputType) {
         setTextSize(textSize);
         setTextColor(textColor);
         setHint(hint);
+        setInputType(inputType);
     }
 
     protected void setTextColor(int textColor){
@@ -85,7 +86,6 @@ public class Row extends LinearLayout {
                 editText.setInputType(InputType.TYPE_CLASS_PHONE);
                 break;
             case CUSTOM:
-                editText.setHint("");
                 break;
             default:
                 Log.d("Default", "Wrong type");
@@ -108,5 +108,9 @@ public class Row extends LinearLayout {
     }
     public String getText() {
         return editText.getText().toString();
+    }
+
+    public void setText(String text){
+        editText.setText("");
     }
 }

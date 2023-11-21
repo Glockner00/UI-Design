@@ -1,7 +1,6 @@
 package com.example.myaccountreg;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -10,7 +9,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AccountRegistration extends LinearLayout {
@@ -39,24 +40,37 @@ public class AccountRegistration extends LinearLayout {
         textView = new TextView(getContext());
         registerButton = new Button(getContext());
         fields = new LinkedHashMap<>();
+        registerButton.setOnClickListener(v -> onRegisterButtonClick());
     }
+
 
     private void onRegisterButtonClick() {
-
+        Registration r = createRegistration();
+        reset();
     }
 
-    public void customizeInputType(String fieldName, int inputType){
-        if(getField(fieldName)!=null){
-            getField(fieldName).setInputType(inputType);
-        }else{
-            Log.d("AccountRegistration", "Row not found for field: " + fieldName);
+    private Registration createRegistration() {
+        Registration registration = new Registration();
+        List<Row> rows = new ArrayList<>();
+        for(Map.Entry<String, Row>entry : fields.entrySet()){
+            Row field = entry.getValue();
+            if(!field.getText().isEmpty()){
+                rows.add(field);
+            }
         }
-
+        return registration;
     }
 
-    public void customizeBaseAppearance(String fieldName, int textSize, int textColor, String hint) {
+    public void reset(){
+        for(Map.Entry<String, Row>entry : fields.entrySet()){
+            Row field = entry.getValue();
+            field.setText("");
+        }
+    }
+
+    public void updateBaseAppearance(String fieldName, int textSize, int textColor, String hint, int inputType) {
         if (getField(fieldName) != null) {
-            getField(fieldName).customizeBaseAppearance(textSize, textColor, hint);
+            getField(fieldName).customizeBaseAppearance(textSize, textColor, hint, inputType);
         } else {
             Log.d("AccountRegistration", "Row not found for field: " + fieldName);
         }
@@ -94,12 +108,11 @@ public class AccountRegistration extends LinearLayout {
     }
     private void updateButtonViewContent(){
         registerButton.setText("Register");
-        registerButton.setOnClickListener(v -> onRegisterButtonClick());
         addView(registerButton);
     }
     private void updateTextViewContent() {
         String textContent = "Register Account";
-        textView.setTextSize(18);
+        textView.setTextSize(30);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
         textView.setText(textContent);
