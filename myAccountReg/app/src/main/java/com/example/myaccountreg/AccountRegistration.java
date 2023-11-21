@@ -5,13 +5,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class AccountRegistration extends LinearLayout {
-    private ArrayList<RowType> selectedFields;
+    private LinkedHashMap<String, Row> fields;
     private TextView textView;
     private Button registerButton;
     private Row row;
@@ -35,35 +37,36 @@ public class AccountRegistration extends LinearLayout {
         setOrientation(VERTICAL);
         textView = new TextView(getContext());
         registerButton = new Button(getContext());
-        selectedFields = new ArrayList<>();
+        fields = new LinkedHashMap<>();
     }
 
     private void onRegisterButtonClick() {
 
     }
 
-    public void addField(RowType rowType){
+    public void addField(String name, RowType rowType){
+        row = new Row(getContext());
         if(rowType!=null){
-            selectedFields.add(rowType);
+            row.setRowName(name);
+            row.setRowType(rowType);
+            fields.put(name,row);
             updateFields();
         }
     }
-    public void removeField(RowType rowType) {
-        if (rowType != null) {
-            selectedFields.remove(rowType);
+    public void removeField(String name) {
+        if (!name.isEmpty()) {
+            fields.remove(name);
             updateFields();
         } else {
             Log.d("Wrong fieldType", "removeField");
         }
     }
-
     private void updateFields() {
         removeAllViews();
         updateTextViewContent();
-        for (RowType fieldType : selectedFields) {
-            row = new Row(getContext());
-            row.setRowType(fieldType);
-            addView(row);
+        for (Map.Entry<String, Row>entry : fields.entrySet()) {
+            EditText field = entry.getValue().makeRow(entry.getValue().getRowType());
+            addView(field);
         }
         updateButtonViewContent();
     }
