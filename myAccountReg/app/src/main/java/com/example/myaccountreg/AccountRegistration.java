@@ -1,6 +1,7 @@
 package com.example.myaccountreg;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,6 +43,27 @@ public class AccountRegistration extends LinearLayout {
 
     private void onRegisterButtonClick() {
 
+    }
+
+    public void customizeInputType(String fieldName, int inputType){
+        if(getField(fieldName)!=null){
+            getField(fieldName).setInputType(inputType);
+        }else{
+            Log.d("AccountRegistration", "Row not found for field: " + fieldName);
+        }
+
+    }
+
+    public void customizeBaseAppearance(String fieldName, int textSize, int textColor, String hint) {
+        if (getField(fieldName) != null) {
+            getField(fieldName).customizeBaseAppearance(textSize, textColor, hint);
+        } else {
+            Log.d("AccountRegistration", "Row not found for field: " + fieldName);
+        }
+    }
+
+    private Row getField(String fieldName){
+        return fields.get(fieldName);
     }
 
     public void addField(String name, RowType rowType){

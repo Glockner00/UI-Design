@@ -6,20 +6,47 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
-
 public class Row extends LinearLayout {
     private RowType rowType;
     private String name;
     private EditText editText;
-    public Row(Context context) {
+    protected Row(Context context) {
         super(context);
     }
-    public Row(Context context, @Nullable AttributeSet attrs) {
+    protected Row(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-    public Row(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    protected Row(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+    protected void customizeBaseAppearance(int textSize, int textColor, String hint) {
+        setTextSize(textSize);
+        setTextColor(textColor);
+        setHint(hint);
+    }
+
+    protected void setTextColor(int textColor){
+        editText.setTextColor(textColor);
+    }
+
+    protected void setTextSize(int textSize){
+        editText.setTextSize(textSize);
+
+    }
+    protected void setBackGroundColor(int backGroundColor){
+        editText.setBackgroundColor(backGroundColor);
+    }
+
+    protected void setHint(String text){
+        editText.setHint(text);
+    }
+
+    protected void setInputType(int inputType){
+        editText.setInputType(inputType);
+    }
+
+
     protected EditText makeRow(RowType rowType){
         editText = new EditText(getContext());
         LayoutParams params = new LayoutParams(
@@ -31,7 +58,7 @@ public class Row extends LinearLayout {
         switch (rowType){
             case PASSWORD:
                 editText.setHint("password");
-                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
                 break;
             case EMAIL:
                 editText.setHint("email");
@@ -59,7 +86,6 @@ public class Row extends LinearLayout {
                 break;
             case CUSTOM:
                 editText.setHint("");
-                editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
             default:
                 Log.d("Default", "Wrong type");
