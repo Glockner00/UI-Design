@@ -29,9 +29,7 @@ public class AccountRegistration extends LinearLayout {
     private TextView textView;
     private Button registerButton;
     private Row row;
-    private RegistrationListener registrationListener;
     private RegistrationValidator registrationValidator;
-    private RegistrationLogic registrationLogic;
     public AccountRegistration(Context context) {
         super(context);
         init();
@@ -63,31 +61,16 @@ public class AccountRegistration extends LinearLayout {
     private void onRegisterButtonClick() {
         Registration registration = createRegistration();
         if(registrationValidator.validate(registration)){
-            if(registrationLogic!=null){
-                registrationLogic.apply(registration);
-            }else if(registrationListener!=null){
-                registrationListener.onRegistrationClicked(registration);
-
-            }
+            Log.d("AccountRegistration", "Validation succeeded");
         }else{
             Log.d("AccountRegistration", "Validation failed");
         }
         reset();
     }
 
-    public void setRegistrationListener(RegistrationListener listener) {
-        this.registrationListener = listener;
-    }
-
     public void setRegistrationValidator(RegistrationValidator validator) {
         this.registrationValidator = validator;
     }
-
-    public void setRegistrationLogic(RegistrationLogic logic) {
-        this.registrationLogic = logic;
-    }
-
-
 
     private Registration createRegistration() {
         Registration registration = new Registration();
