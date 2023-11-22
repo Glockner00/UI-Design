@@ -3,6 +3,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     AccountRegistration accountRegistration;
@@ -20,6 +23,17 @@ public class MainActivity extends AppCompatActivity {
         accountRegistration.addField("customfield", RowType.CUSTOM);
         accountRegistration.updateBaseAppearance("customfield", 18, Color.BLACK,
                                                  "custom-field", InputType.TYPE_CLASS_TEXT);
+
+        accountRegistration.setRegistrationValidator(new RegistrationValidator() {
+            @Override
+            public boolean validate(Registration registration) {
+                List<Row> rows = registration.getRows();
+                for (Row row : rows) {
+                    Log.d("Developer Validation", "Type: " + row.getRowType() + ", Value: " + row.getText());
+                }
+                return true;
+            }
+        });
 
     }
 }
