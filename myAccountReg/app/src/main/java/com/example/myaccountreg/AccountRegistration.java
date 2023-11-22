@@ -29,6 +29,9 @@ public class AccountRegistration extends LinearLayout {
     private TextView textView;
     private Button registerButton;
     private Row row;
+    private RegistrationListener registrationListener;
+    private RegistrationValidator registrationValidator;
+    private RegistrationLogic registrationLogic;
     public AccountRegistration(Context context) {
         super(context);
         init();
@@ -54,32 +57,46 @@ public class AccountRegistration extends LinearLayout {
         textView.setTextSize(30);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
+        registrationValidator = new DefaultRegistrationValidator();
     }
 
     private void onRegisterButtonClick() {
-        Registration r = createRegistration();
+        Registration registration = createRegistration();
+        if(registrationValidator.validate(registration)){
+            if(registrationLogic!=null){
+                registrationLogic.apply(registration);
+            }else if(registrationListener!=null){
+                registrationListener.onRegistrationClicked(registration);
+
+            }
+        }else{
+            Log.d("AccountRegistration", "Validation failed");
+        }
         reset();
-
-
-        /*add register code listner ...
-        tar emot ett interfacd som innehåller en metod som körs när man kör register
-
-        tar emot datan i registreringen,
-        borde kunna ha en default
-        namnet/vilka parametrar*/
-
     }
+
+    public void setRegistrationListener(RegistrationListener listener) {
+        this.registrationListener = listener;
+    }
+
+    public void setRegistrationValidator(RegistrationValidator validator) {
+        this.registrationValidator = validator;
+    }
+
+    public void setRegistrationLogic(RegistrationLogic logic) {
+        this.registrationLogic = logic;
+    }
+
+
 
     private Registration createRegistration() {
         Registration registration = new Registration();
         List<Row> rows = new ArrayList<>();
         for(Map.Entry<String, Row>entry : fields.entrySet()){
             Row field = entry.getValue();
-            if(!field.getText().isEmpty()){
-                Log.wtf("message" , entry.getValue().getRowType() + " : " + entry.getValue().getText());
-                rows.add(field);
-            }
+            rows.add(field);
         }
+        registration.setRows(rows);
         return registration;
     }
 
