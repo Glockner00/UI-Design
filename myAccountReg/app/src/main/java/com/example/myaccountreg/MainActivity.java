@@ -3,11 +3,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import java.util.List;
 /**
- * Exempel på hur man skulle kunna använda komponenten AccountRegistration.
+ * Example of how the AccountRegistration component could be used.
  */
 public class MainActivity extends AppCompatActivity {
     private AccountRegistration accountRegistration;
@@ -17,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         accountRegistration = findViewById(R.id.accountReg);
 
-        /**
-         * Skapar önskade fält.
-         */
+        // Set all rows/fields.
         accountRegistration.addField("firstname", RowType.FIRSTNAME);
         accountRegistration.addField("lastname", RowType.LASTNAME);
         accountRegistration.addField("password", RowType.PASSWORD);
@@ -27,21 +24,15 @@ public class MainActivity extends AppCompatActivity {
         accountRegistration.addField("email", RowType.EMAIL);
         accountRegistration.addField("phonenumber",RowType.PHONENUMBER);
 
-        /**
-         * skapar ett tomt "custom" fält, och sätter nödvändiga parametrar.
-         */
+        // adding a custom field and setting its appearance.
         accountRegistration.addField("customfield", RowType.CUSTOM);
         accountRegistration.updateBaseAppearance("customfield", 18, Color.BLACK, "custom-field", InputType.TYPE_CLASS_TEXT);
 
-        /**
-         * Hur man skulle kunna få åtkomst till varje fälts view och hur man skulle kunna manipulera den viewn.
-         */
+        // Gaining access to a rows/fields view and an example of how to manipulate the appearance of that view.
         View firstNameView = accountRegistration.getRowView("firstname");
-        //firstNameView.setBackgroundColor(Color.RED);
+        firstNameView.setBackgroundColor(Color.RED);
 
-        /**
-         * Implementerar sin egen validerings-logik.
-         */
+        // Creating custom registration logic.
         accountRegistration.setRegistrationValidator(new RegistrationValidator() {
             @Override
             public boolean validate(Registration registration) {
@@ -56,6 +47,5 @@ public class MainActivity extends AppCompatActivity {
                 return allFieldsFilled;
             }
         });
-
     }
 }

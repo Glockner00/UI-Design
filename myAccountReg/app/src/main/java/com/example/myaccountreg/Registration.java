@@ -1,8 +1,9 @@
 package com.example.myaccountreg;
-
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * A class for representing all rows/fields of a registration.
+ */
 public class Registration {
     private List<Row> rows;
     public Registration(){

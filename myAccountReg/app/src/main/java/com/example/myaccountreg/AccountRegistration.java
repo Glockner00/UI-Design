@@ -14,15 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
- * PASSWORD STRENGTH METER
- * ärven en layout som har två subkomponenter en edittext och en bar. finns färdiga i android.
- * validerar lösenordet, någon slag default logik
- * ska kunna implemtera egen logik
- * too weak.. osv
- * färger, storlek
- * lägga till antal nivåer, alltså påverka gränssnittet.
+ * A custom component for creating a registration application.
+ * Customizable rows/fields, appearance and validation logic.
  */
 
 public class AccountRegistration extends LinearLayout {
@@ -47,6 +41,10 @@ public class AccountRegistration extends LinearLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
+
+    /**
+     * Initializing all necessary data structures, and constants.
+     */
     private void init() {
         setOrientation(VERTICAL);
         textView = new TextView(getContext());
@@ -59,9 +57,13 @@ public class AccountRegistration extends LinearLayout {
         registrationValidator = new DefaultRegistrationValidator();
     }
 
+    /**
+     * Returns the view of a row.
+     * @param fieldName
+     * @return view
+     */
     public View getRowView(String fieldName){
         if(fields.get(fieldName)!=null){
-            Log.d("message", "hej");
             return fields.get(fieldName).getRowView();
         }else {
             Log.d("getRowView", "Row doesn't exist");
@@ -69,7 +71,9 @@ public class AccountRegistration extends LinearLayout {
         }
     }
 
-
+    /**
+     * Validates a registration and resets all rows.
+     */
     private void onRegisterButtonClick() {
         Registration registration = createRegistration();
         if(registrationValidator.validate(registration)){
@@ -80,10 +84,10 @@ public class AccountRegistration extends LinearLayout {
         reset();
     }
 
-    public void setRegistrationValidator(RegistrationValidator validator) {
-        this.registrationValidator = validator;
-    }
-
+    /**
+     * Creates an object registration with that has all rows/fields.
+     * @return registration
+     */
     private Registration createRegistration() {
         Registration registration = new Registration();
         List<Row> rows = new ArrayList<>();
@@ -95,13 +99,24 @@ public class AccountRegistration extends LinearLayout {
         return registration;
     }
 
-    public void reset(){
+    /**
+     * Clear text in all rows.
+     */
+    private void reset(){
         for(Map.Entry<String, Row>entry : fields.entrySet()){
             Row field = entry.getValue();
             field.setText("");
         }
     }
 
+    /**
+     * Update or set a row/fields apperance.
+     * @param fieldName
+     * @param textSize
+     * @param textColor
+     * @param hint
+     * @param inputType
+     */
     public void updateBaseAppearance(String fieldName, int textSize, int textColor, String hint, int inputType) {
         if (getField(fieldName) != null) {
             getField(fieldName).customizeBaseAppearance(textSize, textColor, hint, inputType);
@@ -110,10 +125,11 @@ public class AccountRegistration extends LinearLayout {
         }
     }
 
-    private Row getField(String fieldName){
-        return fields.get(fieldName);
-    }
-
+    /**
+     * Adding a field the datastructure containing all rows/fields.
+     * @param name
+     * @param rowType
+     */
     public void addField(String name, RowType rowType){
         row = new Row(getContext());
         if(rowType!=null){
@@ -123,6 +139,11 @@ public class AccountRegistration extends LinearLayout {
             updateFields();
         }
     }
+
+    /**
+     * Remove a field from the datastructure containing all row/fields.
+     * @param name
+     */
     public void removeField(String name) {
         if (!name.isEmpty()) {
             fields.remove(name);
@@ -131,6 +152,10 @@ public class AccountRegistration extends LinearLayout {
             Log.d("Wrong fieldType", "removeField");
         }
     }
+
+    /**
+     * Uppdate the view. Clear the view and re-add all text, rows/fields, buttons.
+     */
     private void updateFields() {
         removeAllViews();
         updateTextViewContent();
@@ -142,13 +167,27 @@ public class AccountRegistration extends LinearLayout {
         }
         updateButtonViewContent();
     }
+
+    /**
+     * Adding view for a button.
+     */
     private void updateButtonViewContent(){
         registerButton.setText("Register");
         addView(registerButton);
     }
+
+    /**
+     * Adding view for a textView.
+     */
     private void updateTextViewContent() {
         String textContent = "Register Account";
         textView.setText(textContent);
         addView(textView);
     }
+
+    /**
+     * Getters and setters.
+     */
+    private Row getField(String fieldName){ return fields.get(fieldName); }
+    public void setRegistrationValidator(RegistrationValidator validator) { this.registrationValidator = validator; }
 }

@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
+/**
+ * A class that represents a row/field.
+ * Each row has a RowType, a String name, an EditText and a View.
+ */
 public class Row extends LinearLayout {
     private RowType rowType;
     private String name;
@@ -25,10 +29,17 @@ public class Row extends LinearLayout {
         init();
     }
 
-    protected void setError(String error){
-        editText.setError(error);
+    private void init() {
+        this.rowView = this;
     }
 
+    /**
+     * For customizing a rows text and input type.
+     * @param textSize
+     * @param textColor
+     * @param hint
+     * @param inputType
+     */
     protected void customizeBaseAppearance(int textSize, int textColor, String hint, int inputType) {
         setTextSize(textSize);
         setTextColor(textColor);
@@ -36,27 +47,11 @@ public class Row extends LinearLayout {
         setInputType(inputType);
     }
 
-    protected void setTextColor(int textColor){
-        editText.setTextColor(textColor);
-    }
-
-    protected void setTextSize(int textSize){
-        editText.setTextSize(textSize);
-
-    }
-    protected void setBackGroundColor(int backGroundColor){
-        editText.setBackgroundColor(backGroundColor);
-    }
-
-    protected void setHint(String text){
-        editText.setHint(text);
-    }
-
-    protected void setInputType(int inputType){
-        editText.setInputType(inputType);
-    }
-
-
+    /**
+     * A function for creating a row.
+     * @param rowType
+     * @return editText
+     */
     protected EditText makeRow(RowType rowType){
         editText = new EditText(getContext());
         LayoutParams params = new LayoutParams(
@@ -101,8 +96,11 @@ public class Row extends LinearLayout {
                 break;
         }
         return editText;
-
     }
+
+    /**
+     * Setters and getters.
+     */
     public void setRowType(RowType type) {
         this.rowType = type;
     }
@@ -118,15 +116,17 @@ public class Row extends LinearLayout {
     public void setText(String text){
         editText.setText("");
     }
-    public View getRowView(){
-        return rowView;
+    public View getRowView(){ return rowView; }
+    public void setRowView(View view) { this.rowView = view; }
+    public void setTextColor(int textColor){
+        editText.setTextColor(textColor);
     }
-    public void setRowView(View view) {
-        this.rowView = view;
+    public void setTextSize(int textSize){ editText.setTextSize(textSize); }
+    public void setHint(String text){
+        editText.setHint(text);
     }
-
-    private void init() {
-        this.rowView = this;
+    public void setInputType(int inputType){
+        editText.setInputType(inputType);
     }
-
+    public void setError(String error){ editText.setError(error); }
 }
