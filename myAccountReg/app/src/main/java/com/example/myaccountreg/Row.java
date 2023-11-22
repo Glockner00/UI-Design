@@ -10,6 +10,8 @@ public class Row extends LinearLayout {
     private RowType rowType;
     private String name;
     private EditText editText;
+
+    // spara view globalt
     protected Row(Context context) {
         super(context);
     }
@@ -54,7 +56,6 @@ public class Row extends LinearLayout {
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.MATCH_PARENT
         );
-
         editText.setLayoutParams(params);
         switch (rowType){
             case PASSWORD:
@@ -100,16 +101,12 @@ public class Row extends LinearLayout {
     public RowType getRowType() {
         return rowType;
     }
-    public String getName() {
-        return name;
-    }
     public void setRowName(String name){
         this.name = name;
     }
     public String getText() {
         return editText.getText().toString();
     }
-
     public void setText(String text){
         editText.setText("");
     }

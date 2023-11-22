@@ -14,6 +14,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * PASSWORD STRENGTH METER
+ * ärven en layout som har två subkomponenter en edittext och en bar. finns färdiga i android.
+ * validerar lösenordet, någon slag default logik
+ * ska kunna implemtera egen logik
+ * too weak.. osv
+ * färger, storlek
+ * lägga till antal nivåer, alltså påverka gränssnittet.
+ */
+
 public class AccountRegistration extends LinearLayout {
     private LinkedHashMap<String, Row> fields;
     private TextView textView;
@@ -41,12 +51,23 @@ public class AccountRegistration extends LinearLayout {
         registerButton = new Button(getContext());
         fields = new LinkedHashMap<>();
         registerButton.setOnClickListener(v -> onRegisterButtonClick());
+        textView.setTextSize(30);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setGravity(Gravity.CENTER);
     }
-
 
     private void onRegisterButtonClick() {
         Registration r = createRegistration();
         reset();
+
+
+        /*add register code listner ...
+        tar emot ett interfacd som innehåller en metod som körs när man kör register
+
+        tar emot datan i registreringen,
+        borde kunna ha en default
+        namnet/vilka parametrar*/
+
     }
 
     private Registration createRegistration() {
@@ -55,6 +76,7 @@ public class AccountRegistration extends LinearLayout {
         for(Map.Entry<String, Row>entry : fields.entrySet()){
             Row field = entry.getValue();
             if(!field.getText().isEmpty()){
+                Log.wtf("message" , entry.getValue().getRowType() + " : " + entry.getValue().getText());
                 rows.add(field);
             }
         }
@@ -112,9 +134,6 @@ public class AccountRegistration extends LinearLayout {
     }
     private void updateTextViewContent() {
         String textContent = "Register Account";
-        textView.setTextSize(30);
-        textView.setTypeface(null, Typeface.BOLD);
-        textView.setGravity(Gravity.CENTER);
         textView.setText(textContent);
         addView(textView);
     }
