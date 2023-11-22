@@ -3,6 +3,7 @@ import android.content.Context;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
@@ -10,16 +11,22 @@ public class Row extends LinearLayout {
     private RowType rowType;
     private String name;
     private EditText editText;
-
-    // spara view globalt
+    private View rowView;
     protected Row(Context context) {
         super(context);
+        init();
     }
     protected Row(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
     protected Row(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    protected void setError(String error){
+        editText.setError(error);
     }
 
     protected void customizeBaseAppearance(int textSize, int textColor, String hint, int inputType) {
@@ -60,6 +67,7 @@ public class Row extends LinearLayout {
         switch (rowType){
             case PASSWORD:
                 editText.setHint("password");
+                editText.setError("Missing input");
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
                 break;
             case EMAIL:
@@ -110,4 +118,15 @@ public class Row extends LinearLayout {
     public void setText(String text){
         editText.setText("");
     }
+    public View getRowView(){
+        return rowView;
+    }
+    public void setRowView(View view) {
+        this.rowView = view;
+    }
+
+    private void init() {
+        this.rowView = this;
+    }
+
 }

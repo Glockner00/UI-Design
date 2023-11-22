@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -57,6 +58,17 @@ public class AccountRegistration extends LinearLayout {
         textView.setGravity(Gravity.CENTER);
         registrationValidator = new DefaultRegistrationValidator();
     }
+
+    public View getRowView(String fieldName){
+        if(fields.get(fieldName)!=null){
+            Log.d("message", "hej");
+            return fields.get(fieldName).getRowView();
+        }else {
+            Log.d("getRowView", "Row doesn't exist");
+            return null;
+        }
+    }
+
 
     private void onRegisterButtonClick() {
         Registration registration = createRegistration();
@@ -123,7 +135,9 @@ public class AccountRegistration extends LinearLayout {
         removeAllViews();
         updateTextViewContent();
         for (Map.Entry<String, Row>entry : fields.entrySet()) {
-            EditText field = entry.getValue().makeRow(entry.getValue().getRowType());
+            Row row = entry.getValue();
+            EditText field = row.makeRow(entry.getValue().getRowType());
+            row.setRowView(field);
             addView(field);
         }
         updateButtonViewContent();
