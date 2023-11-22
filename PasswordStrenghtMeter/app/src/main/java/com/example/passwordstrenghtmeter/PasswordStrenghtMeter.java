@@ -18,7 +18,7 @@ public class PasswordStrenghtMeter extends LinearLayout {
     private DefaultValidator defaultValidator;
     private StrengthValidator strengthValidator;
     private Password password;
-    private StrenghtBar strenghtBar;
+    private StrengthBar strengthBar;
     public PasswordStrenghtMeter(Context context) {
         super(context);
     }
@@ -41,11 +41,11 @@ public class PasswordStrenghtMeter extends LinearLayout {
     private void init(){
         setOrientation(VERTICAL);
         password = new Password(getContext());
-        strenghtBar = new StrenghtBar(getContext());
+        strengthBar = new StrengthBar(getContext());
         strengthValidator = new DefaultValidator();
         password.addTextChangedListener(getTextWatcher());
         addView(password);
-        addView(strenghtBar);
+        addView(strengthBar);
 
     }
 
@@ -60,7 +60,8 @@ public class PasswordStrenghtMeter extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 final String text = s.toString();
-                strenghtBar.updateStrength(strengthValidator.Validate(text));
+                strengthBar.updateStrength(strengthValidator.Validate(text));
+
             }
         };
     }

@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         passwordStrenghtMeter = findViewById(R.id.passwordstrenghtmeter);
         View passwordView = passwordStrenghtMeter.getPasswordView();
-        passwordStrenghtMeter.setStrengthValidator(new StrengthValidator() {
+        /*passwordStrenghtMeter.setStrengthValidator(new StrengthValidator() {
             @Override
             public int Validate(String password) {
                 if(0<password.length() && password.length()<2){
@@ -24,6 +24,6 @@ public class MainActivity extends AppCompatActivity {
                     return 1;
                 }
             }
-        });
+        });*/
     }
 }
