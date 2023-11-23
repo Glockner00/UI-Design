@@ -1,17 +1,39 @@
 package com.example.passwordstrenghtmeter;
+
+/**
+ * A class for the default validation logic.
+ */
 public class DefaultValidator implements StrengthValidator {
     @Override
-    public int Validate(String password) {
-        if(password.isEmpty()){
-            return 0;
-        } else if(2<password.length() && password.length()<5){
-            return 1;
-        } else if (5<=password.length() && password.length()<9) {
-            return 2;
-        }else if (9<=password.length()) {
-            return 3;
-        }else{
-            return 0;
+    public boolean ValidateLength(String password) {
+        return (password.length()>6);
+    }
+    @Override
+    public boolean ValidateSpecialCharacters(String password){
+        String specialChars = "/@#$%&.,;:)(=?!";
+        int requiredCount = 2;
+        int count = 0;
+        for (int i = 0; i < password.length(); i++) {
+            if (specialChars.contains(String.valueOf(password.charAt(i)))) {
+                count++;
+                if (count >= requiredCount) {
+                    return true;
+                }
+            }
         }
+        return false;
+    }
+    @Override
+    public boolean ValidateCapLetters(String password) {
+        for (int i=0; i<password.length(); i++) {
+            if (Character.isUpperCase(password.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @Override
+    public String ErrorMessage() {
+        return "Password should be ten characters long with two special characters and one capital character.";
     }
 }

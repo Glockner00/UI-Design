@@ -7,9 +7,9 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.example.passwordstrenghtmeter.PasswordStrenghtMeter
+    <com.example.passwordstrenghtmeter.PasswordStrengthMeter
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/passwordstrenghtmeter">
-    </com.example.passwordstrenghtmeter.PasswordStrenghtMeter>
+        android:id="@+id/passwordstrengthmeter">
+    </com.example.passwordstrenghtmeter.PasswordStrengthMeter>
 </LinearLayout>

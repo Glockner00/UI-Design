@@ -1,54 +1,54 @@
 package com.example.passwordstrenghtmeter;
-
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-public class PasswordStrenghtMeter extends LinearLayout {
-
-    private Button button;
-
-    private DefaultValidator defaultValidator;
-    private StrengthValidator strengthValidator;
+public class PasswordStrengthMeter extends LinearLayout {
+    private StrengthValidator strengthValidator; // an interface for validating password strength.
     private Password password;
     private StrengthBar strengthBar;
-    public PasswordStrenghtMeter(Context context) {
+    public PasswordStrengthMeter(Context context) {
         super(context);
     }
 
-    public PasswordStrenghtMeter(Context context, @Nullable AttributeSet attrs) {
+    public PasswordStrengthMeter(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PasswordStrenghtMeter(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PasswordStrengthMeter(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
-
-    public PasswordStrenghtMeter(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public PasswordStrengthMeter(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
+    /**
+     * Initialize all datastructures and adding all views.
+     */
     private void init(){
         setOrientation(VERTICAL);
         password = new Password(getContext());
         strengthBar = new StrengthBar(getContext());
         strengthValidator = new DefaultValidator();
         password.addTextChangedListener(getTextWatcher());
+        strengthBar.setErrorMessage(strengthValidator.ErrorMessage());
         addView(password);
         addView(strengthBar);
-
+        addView(strengthBar.getErrorMessageView());
     }
 
+    /**
+     * A text watcher to dynamically validate the password.
+     * @return TextWatcher
+     */
     private TextWatcher getTextWatcher(){
         return new TextWatcher() {
             @Override
@@ -60,17 +60,35 @@ public class PasswordStrenghtMeter extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 final String text = s.toString();
-                strengthBar.updateStrength(strengthValidator.Validate(text));
-
+                strengthBar.updateStrengthNew(strengthValidator.ValidateLength(text),
+                                              strengthValidator.ValidateSpecialCharacters(text),
+                                              strengthValidator.ValidateCapLetters(text));
             }
         };
     }
 
+    /**
+     * Function for setting new validation logic.
+     * @param validator
+     */
     public void setStrengthValidator(StrengthValidator validator){
         this.strengthValidator = validator;
     }
+
+    /**
+     * Access to the EditText view.
+     * @return View
+     */
     public View getPasswordView(){
         return password.getView();
+    }
+
+    /**
+     * Access to the ProgressBar view.
+     * @return View
+     */
+    public View getProgressBarView(){
+        return strengthBar.getProgressBarView();
     }
 
 
