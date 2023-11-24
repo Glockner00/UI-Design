@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public boolean ValidateSpecialCharacters(String password) {
-                String specialChars = "/@#$%&.,;:)(=?!";
+                String specialChars = "/@#$%&.,;:)(=?!+-|<>{}[]~^*'§";
                 int requiredCount = 1;
                 int count = 0;
                 for (int i = 0; i < password.length(); i++) {

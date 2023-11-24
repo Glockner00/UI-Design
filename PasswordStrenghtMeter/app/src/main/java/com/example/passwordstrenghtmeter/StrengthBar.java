@@ -73,7 +73,7 @@ public class StrengthBar extends ProgressBar {
         }
         if(trueCount==0){
             setProgressbarColor(defaultColor);
-            hideErrorMessage();
+            showErrorMessage();
             setProgress(0);
         }if(trueCount==1){
             setProgressbarColor(weakColor);
