@@ -6,7 +6,7 @@ package com.example.passwordstrenghtmeter;
 public class DefaultValidator implements StrengthValidator {
     @Override
     public boolean ValidateLength(String password) {
-        return (password.length()>6);
+        return (password.length()>10);
     }
     @Override
     public boolean ValidateSpecialCharacters(String password){
@@ -34,6 +34,6 @@ public class DefaultValidator implements StrengthValidator {
     }
     @Override
     public String ErrorMessage() {
-        return "Password should be ten characters long with two special characters and one capital character.";
+        return "Password should at least ten characters long with two special characters and one capital character.";
     }
 }

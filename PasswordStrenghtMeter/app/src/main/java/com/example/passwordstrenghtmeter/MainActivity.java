@@ -2,6 +2,7 @@ package com.example.passwordstrenghtmeter;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
 /**
  * An example of how a developer could use the PasswordStrengthMeter component.
  */

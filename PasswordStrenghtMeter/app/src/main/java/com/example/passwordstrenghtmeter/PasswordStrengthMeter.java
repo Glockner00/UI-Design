@@ -5,7 +5,6 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import androidx.annotation.Nullable;
 
 public class PasswordStrengthMeter extends LinearLayout {
@@ -73,6 +72,7 @@ public class PasswordStrengthMeter extends LinearLayout {
      */
     public void setStrengthValidator(StrengthValidator validator){
         this.strengthValidator = validator;
+        strengthBar.setErrorMessage(strengthValidator.ErrorMessage());
     }
 
     /**
@@ -90,7 +90,4 @@ public class PasswordStrengthMeter extends LinearLayout {
     public View getProgressBarView(){
         return strengthBar.getProgressBarView();
     }
-
-
-
 }

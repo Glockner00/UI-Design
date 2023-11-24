@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 public class Password extends androidx.appcompat.widget.AppCompatEditText {
     private View passwordView;
     public Password(@NonNull Context context) {
