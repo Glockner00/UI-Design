@@ -66,6 +66,19 @@ public class PasswordStrengthMeter extends LinearLayout {
         };
     }
 
+    public void setProgressbarColors(int weakColor, int mediumColor, int strongColor){
+        strengthBar.setProgressbarColors(weakColor, mediumColor, strongColor);
+    }
+
+    public void setErrorMessageColor(int color){
+        strengthBar.setErrorMessageColor(color);
+    }
+
+    public void setPasswordTextColor(int color){
+        password.setPasswordTextColor(color);
+    }
+
+
     /**
      * Function for setting new validation logic.
      * @param validator

@@ -33,6 +33,7 @@ public class StrengthBar extends ProgressBar {
         init();
     }
 
+
     /**
      * Initialize colors and error messages.
      */
@@ -66,9 +67,9 @@ public class StrengthBar extends ProgressBar {
         int progress = 0;
         if(length){
             trueCount++;
-        } if(specChar){
+        }if(specChar){
             trueCount++;
-        } if(capLet){
+        }if(capLet){
             trueCount++;
         }
         if(trueCount==0){
@@ -119,10 +120,13 @@ public class StrengthBar extends ProgressBar {
         return errorMessage;
     }
 
-    public void setColors(int weakColor, int mediumColor, int strongColor) {
+    public void setProgressbarColors(int weakColor, int mediumColor, int strongColor) {
         this.weakColor = weakColor;
         this.mediumColor = mediumColor;
         this.strongColor = strongColor;
+    }
+    protected void setErrorMessageColor(int color){
+        errorMessage.setTextColor(color);
     }
 
     protected void setErrorMessage(String message){

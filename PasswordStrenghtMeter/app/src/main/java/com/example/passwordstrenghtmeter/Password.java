@@ -37,4 +37,9 @@ public class Password extends androidx.appcompat.widget.AppCompatEditText {
     public View getView(){
         return this.passwordView;
     }
+
+    protected void setPasswordTextColor(int color){
+        setTextColor(color);
+    }
+
 }

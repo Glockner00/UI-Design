@@ -1,5 +1,7 @@
 package com.example.passwordstrenghtmeter;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,6 +19,16 @@ public class MainActivity extends AppCompatActivity {
         // How to gain access to both views.
         View passwordView = passwordStrengthMeter.getPasswordView();
         View progressBarView = passwordStrengthMeter.getProgressBarView();
+
+
+        // Setting progressbar colors.
+        passwordStrengthMeter.setErrorMessageColor(Color.rgb(255, 0, 0));
+        passwordStrengthMeter.setProgressbarColors(Color.rgb(255, 0, 0),
+                                                   Color.rgb(255, 165, 0),
+                                                   Color.rgb(0, 255, 0));
+
+        // Setting text visuals.
+        passwordStrengthMeter.setPasswordTextColor(Color.BLACK);
 
         // Implementing custom validation logic.
         passwordStrengthMeter.setStrengthValidator(new StrengthValidator() {
@@ -48,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-            @Override
+            @Overridegit
             public String ErrorMessage() {
-                return "Password should contain seven characters and have one special- and capital character.";
+                return "Password should contain seven characters, one special character and one capital letter.";
             }
         });
 
