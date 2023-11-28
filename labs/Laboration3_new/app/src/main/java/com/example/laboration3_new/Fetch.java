@@ -8,6 +8,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+
+
+/**
+ * fetch data of a search suggestion, keeping track of the searches with int id.
+ */
 public class Fetch {
     private int id;
     private String searchText;

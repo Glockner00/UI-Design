@@ -5,6 +5,13 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
+
+/**
+ * A class representing a single row in the listpopupwindow.
+ * Main function of this class is to draw that row. With help of onDraw/onMeasure.
+ */
+
+
 public class Row extends View {
     private String suggestion;
     private Paint paint;
@@ -13,8 +20,9 @@ public class Row extends View {
         super(context);
         paint = new Paint();
         paint.setTextSize(40);
-        this.suggestion = suggestion;
-        this.textWidth = (int) paint.measureText(suggestion);
+        this.suggestion = suggestion; // single suggestion.
+        this.textWidth = (int) paint.measureText(suggestion);  // later used in adapter for sizing
+                                                               // the listpopupwindow.
     }
     public float getTextWidth(){
         return this.textWidth;

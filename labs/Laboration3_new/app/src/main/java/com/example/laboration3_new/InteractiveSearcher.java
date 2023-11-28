@@ -37,6 +37,11 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
     public void setNumberOfSuggestions(int n){
         this.numberOfSuggestions = n;
     }
+
+    /**
+     * initialize the adapter, listpopupwindow and the data structure for all suggestions,
+     * Adding a text watcher and a click-listener.
+     */
     private void init() {
         if(numberOfSuggestions==-1){numberOfSuggestions=DEFAULT_NUMBER_OF_SUGGESTIONS;}
         mySuggestions = new ArrayList<>();
@@ -49,8 +54,8 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
         listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Row row = (Row) view;
-                setText(row.getSuggestion());
+                Row row = (Row) view;       // A Row is a view --> we can cast Row on each view.
+                setText(row.getSuggestion()); // using the getter from Row.
             }
         });
     }
@@ -61,24 +66,35 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String input = s.toString().trim();
+                // open a thread for a network connection/fetching data.
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         id++;
-                        fetch = new Fetch(id, input, numberOfSuggestions);
-                        mySuggestions = fetch.getSearchSuggestions();
+                        fetch = new Fetch(id, input, numberOfSuggestions); // new fetch
+                        mySuggestions = fetch.getSearchSuggestions(); // set our arraylist with suggestions.
                         post(new Runnable() {
                             @Override
                             public void run() {
-                                if(mySuggestions.isEmpty()){
+                                if(mySuggestions.isEmpty()){ // if we get no search suggestions.
                                     clearWindow();
                                     return;
                                 }
+                                /**
+                                 Check if the current id is the same as fetch id. We are doing this
+                                 to ensure that we get the correct dataset, as we don't know how
+                                 fast each fetch is or how fast the user is typing.
+                                 */
                                 if (id == fetch.getId()) {
-                                    myAdapter.setData(mySuggestions);
-                                    myAdapter.notifyDataSetChanged();
-                                    listPopupWindow.setWidth(myAdapter.getWidestTextWidth());
-                                    listPopupWindow.show();
+
+                                    /**
+                                     Setting data will start creating Rows, and the Rows will be
+                                     drawn with help of onDraw in the Row class.
+                                     */
+                                    myAdapter.setData(mySuggestions); // set available data.
+                                    myAdapter.notifyDataSetChanged(); // notify a change.
+                                    listPopupWindow.setWidth(myAdapter.getWidestTextWidth()); // set the width.
+                                    listPopupWindow.show(); // show the listpopupwindow-view.
                                 }
                             }
                         });
@@ -90,6 +106,10 @@ public class InteractiveSearcher extends androidx.appcompat.widget.AppCompatEdit
             public void afterTextChanged(Editable s) { }
         };
     }
+
+    /**
+     * Clearing out the listpopupwindow.
+     */
     private void clearWindow(){
         myAdapter.clearData();
         myAdapter.notifyDataSetChanged();
