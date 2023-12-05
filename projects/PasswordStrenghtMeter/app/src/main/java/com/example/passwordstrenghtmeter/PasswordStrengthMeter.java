@@ -11,6 +11,7 @@ public class PasswordStrengthMeter extends LinearLayout {
     private StrengthValidator strengthValidator; // an interface for validating password strength.
     private Password password;
     private StrengthBar strengthBar;
+    private String passwordData;
     public PasswordStrengthMeter(Context context) {
         super(context);
     }
@@ -24,6 +25,7 @@ public class PasswordStrengthMeter extends LinearLayout {
         super(context, attrs, defStyleAttr);
         init();
     }
+
     public PasswordStrengthMeter(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -59,9 +61,17 @@ public class PasswordStrengthMeter extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 final String text = s.toString();
+                if(text.isEmpty()){
+                    strengthBar.hideErrorMessage();
+                }
                 strengthBar.updateStrengthNew(strengthValidator.ValidateLength(text),
                                               strengthValidator.ValidateSpecialCharacters(text),
                                               strengthValidator.ValidateCapLetters(text));
+                if(strengthValidator.ValidateLength(text)
+                        && strengthValidator.ValidateSpecialCharacters(text)
+                        && strengthValidator.ValidateCapLetters(text)){
+                    setPasswordData(text);
+                }
             }
         };
     }
@@ -102,5 +112,12 @@ public class PasswordStrengthMeter extends LinearLayout {
      */
     public View getProgressBarView(){
         return strengthBar.getProgressBarView();
+    }
+
+    private void setPasswordData(String text){
+        this.passwordData = text;
+    }
+    public String getPasswordData(){
+        return this.passwordData;
     }
 }

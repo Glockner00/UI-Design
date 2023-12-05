@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 public class StrengthBar extends ProgressBar {
     private static final int defaultColor = Color.TRANSPARENT; // constant for transparent color.
     private static final int alpha = 255; // constant for 100% opacity.
@@ -33,7 +32,6 @@ public class StrengthBar extends ProgressBar {
         init();
     }
 
-
     /**
      * Initialize colors and error messages.
      */
@@ -48,7 +46,7 @@ public class StrengthBar extends ProgressBar {
         this.progressBarView = this;
     }
 
-    private void hideErrorMessage() {
+    protected void hideErrorMessage() {
         errorMessage.setVisibility(View.GONE);
     }
 

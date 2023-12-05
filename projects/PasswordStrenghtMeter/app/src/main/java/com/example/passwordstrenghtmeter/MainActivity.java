@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         View passwordView = passwordStrengthMeter.getPasswordView();
         View progressBarView = passwordStrengthMeter.getProgressBarView();
 
-
         // Setting progressbar colors.
         passwordStrengthMeter.setErrorMessageColor(Color.rgb(255, 0, 0));
         passwordStrengthMeter.setProgressbarColors(Color.rgb(255, 0, 0),
@@ -60,11 +59,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-            @Overridegit
+            @Override
             public String ErrorMessage() {
                 return "Password should contain seven characters, one special character and one capital letter.";
             }
         });
 
+        /**
+         * Access to a valid password.
+         */
+        String password = passwordStrengthMeter.getPasswordData();
     }
 }

@@ -4,4 +4,6 @@ public interface StrengthValidator {
     boolean ValidateSpecialCharacters(String password);
     boolean ValidateCapLetters(String password);
     String ErrorMessage();
+
+
 }

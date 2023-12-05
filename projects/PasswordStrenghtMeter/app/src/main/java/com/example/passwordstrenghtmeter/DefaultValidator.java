@@ -1,5 +1,4 @@
 package com.example.passwordstrenghtmeter;
-
 /**
  * A class for the default validation logic.
  */
