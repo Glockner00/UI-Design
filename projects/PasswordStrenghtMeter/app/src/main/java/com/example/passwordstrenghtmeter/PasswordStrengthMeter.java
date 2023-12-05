@@ -4,6 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
@@ -12,6 +13,12 @@ public class PasswordStrengthMeter extends LinearLayout {
     private Password password;
     private StrengthBar strengthBar;
     private String passwordData;
+
+    private String text;
+
+    private Button button;
+
+    private int passwordId;
     public PasswordStrengthMeter(Context context) {
         super(context);
     }
@@ -39,13 +46,30 @@ public class PasswordStrengthMeter extends LinearLayout {
         password = new Password(getContext());
         strengthBar = new StrengthBar(getContext());
         strengthValidator = new DefaultValidator();
+        button = new Button(getContext());
         password.addTextChangedListener(getTextWatcher());
+        button.setText("Register");
         strengthBar.setErrorMessage(strengthValidator.ErrorMessage());
+        button.setOnClickListener(v -> onButtonClicked());
         addView(password);
         addView(strengthBar);
+        addView(button);
         addView(strengthBar.getErrorMessageView());
     }
 
+    /**
+     * If the password is strong, and the button is clicked we save the password.
+     */
+    private void onButtonClicked(){
+        if(text!=null) {
+            if (strengthValidator.ValidateLength(text)
+                    && strengthValidator.ValidateSpecialCharacters(text)
+                    && strengthValidator.ValidateCapLetters(text)) {
+                setPasswordData(text);
+            }
+        }
+
+    }
     /**
      * A text watcher to dynamically validate the password.
      * @return TextWatcher
@@ -60,18 +84,13 @@ public class PasswordStrengthMeter extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                final String text = s.toString();
+                text = s.toString();
                 if(text.isEmpty()){
                     strengthBar.hideErrorMessage();
                 }
                 strengthBar.updateStrengthNew(strengthValidator.ValidateLength(text),
                                               strengthValidator.ValidateSpecialCharacters(text),
                                               strengthValidator.ValidateCapLetters(text));
-                if(strengthValidator.ValidateLength(text)
-                        && strengthValidator.ValidateSpecialCharacters(text)
-                        && strengthValidator.ValidateCapLetters(text)){
-                    setPasswordData(text);
-                }
             }
         };
     }
@@ -119,5 +138,9 @@ public class PasswordStrengthMeter extends LinearLayout {
     }
     public String getPasswordData(){
         return this.passwordData;
+    }
+
+    public int getPasswordId(){
+        return password.getId();
     }
 }

@@ -2,10 +2,15 @@ package com.example.passwordstrenghtmeter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.core.view.ViewCompat;
+
 public class StrengthBar extends ProgressBar {
     private static final int defaultColor = Color.TRANSPARENT; // constant for transparent color.
     private static final int alpha = 255; // constant for 100% opacity.
@@ -14,6 +19,9 @@ public class StrengthBar extends ProgressBar {
     private int mediumColor;
     private int strongColor;
     private View progressBarView;
+    public static int strengthBarId;
+
+    private int strength;
 
     public StrengthBar(Context context) {
         super(context, null, android.R.attr.progressBarStyleHorizontal);
@@ -33,6 +41,18 @@ public class StrengthBar extends ProgressBar {
     }
 
     /**
+     * Generate a unique id
+     * @return id
+     */
+    private int generateID(){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ViewCompat.generateViewId();
+        } else {
+            return View.generateViewId();
+        }
+    }
+
+    /**
      * Initialize colors and error messages.
      */
     private void init() {
@@ -44,6 +64,9 @@ public class StrengthBar extends ProgressBar {
         errorMessage.setVisibility(View.GONE);
         errorMessage.setGravity(android.view.Gravity.CENTER_VERTICAL | android.view.Gravity.CENTER_HORIZONTAL);
         this.progressBarView = this;
+        strengthBarId = generateID();
+        setId(strengthBarId);
+
     }
 
     protected void hideErrorMessage() {
@@ -70,6 +93,7 @@ public class StrengthBar extends ProgressBar {
         }if(capLet){
             trueCount++;
         }
+        setStrength(trueCount);
         if(trueCount==0){
             setProgressbarColor(defaultColor);
             showErrorMessage();
@@ -129,5 +153,28 @@ public class StrengthBar extends ProgressBar {
 
     protected void setErrorMessage(String message){
         errorMessage.setText(message);
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    /**
+     * For confirming a test.
+     * @return
+     */
+    public String getPasswordStrenght(){
+        if(this.strength==1){
+            return "Weak";
+        }else if(this.strength==2){
+            return "Medium";
+        }else if (this.strength==3){
+            return "Strong";
+        }else{
+            return null;
+        }
     }
 }
