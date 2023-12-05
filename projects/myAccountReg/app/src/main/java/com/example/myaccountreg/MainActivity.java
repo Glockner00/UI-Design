@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Gaining access to a rows/fields view and an example of how to manipulate the appearance of that view.
         View firstNameView = accountRegistration.getRowView("firstname");
-        firstNameView.setBackgroundColor(Color.RED);
+        //firstNameView.setBackgroundColor(Color.RED);
 
         // Creating custom registration logic.
         accountRegistration.setRegistrationValidator(new RegistrationValidator() {
@@ -47,5 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 return allFieldsFilled;
             }
         });
+        // access to registration data.
+        List<Row> data = accountRegistration.getData();
     }
 }

@@ -23,6 +23,10 @@ public class AccountRegistration extends LinearLayout {
     private LinkedHashMap<String, Row> fields;
     private TextView textView;
     private Button registerButton;
+
+    private List<Row> reg;
+
+    private Registration registration;
     private Row row;
     private RegistrationValidator registrationValidator;
     public AccountRegistration(Context context) {
@@ -75,13 +79,15 @@ public class AccountRegistration extends LinearLayout {
      * Validates a registration and resets all rows.
      */
     private void onRegisterButtonClick() {
-        Registration registration = createRegistration();
+        registration = createRegistration();
         if(registrationValidator.validate(registration)){
+            setData(registration.getRows());
             Log.d("AccountRegistration", "Validation succeeded");
+            reset();
         }else{
             Log.d("AccountRegistration", "Validation failed");
         }
-        reset();
+
     }
 
     /**
@@ -190,4 +196,11 @@ public class AccountRegistration extends LinearLayout {
      */
     private Row getField(String fieldName){ return fields.get(fieldName); }
     public void setRegistrationValidator(RegistrationValidator validator) { this.registrationValidator = validator; }
+
+    public void setData(List<Row> data){
+        this.reg = data;
+    }
+    public List<Row> getData(){
+        return registration.getRows();
+    }
 }
